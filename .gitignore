@@ -1,0 +1,18 @@
+*.class
+__pycache__/*.pyc
+
+
+# Compiled Python bytecode
+*.py[cod]
+
+# Log files
+*.log
+
+.DS_Store
+**.DS_Store
+
+__pycache__/
+*.py[cod]
+*$py.class
+"__pycache__/" 
+"*.pyc" 

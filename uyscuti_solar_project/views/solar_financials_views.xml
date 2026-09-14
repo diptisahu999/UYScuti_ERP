@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Solar Financials Form View -->
+        <record id="view_solar_financials_form" model="ir.ui.view">
+            <field name="name">solar.financials.form</field>
+            <field name="model">solar.financials</field>
+            <field name="arch" type="xml">
+                <form string="Solar Financial Projections">
+                    <header>
+                        <button name="action_recalculate_projections" string="Recalculate Projections" type="object" class="btn-primary" icon="fa-refresh"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" string="Projection Reference"/>
+                            <h1><field name="name" readonly="1"/></h1>
+                        </div>
+
+                        <group>
+                            <group string="Project &amp; Consumer Details">
+                                <field name="project_id" readonly="context.get('default_project_id')"/>
+                                <field name="partner_id" readonly="1"/>
+                                <field name="project_type" readonly="1"/>
+                            </group>
+                            <group string="Key Metrics (25-Year Projection)" class="bg-light p-3 border rounded shadow-sm">
+                                <field name="irr_pct" decoration-bf="1" decoration-success="irr_pct &gt; 12" widget="float" readonly="1"/>
+                                <field name="roi_pct" decoration-bf="1" decoration-info="1" widget="float" readonly="1"/>
+                                <field name="total_net_profit_lakh" decoration-bf="1" readonly="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page name="financial_parameters" string="Financial &amp; Sizing Parameters">
+                                <group>
+                                    <group string="Sizing &amp; Generation">
+                                        <field name="kw_capacity" readonly="1"/>
+                                        <field name="annual_yield_per_kw"/>
+                                        <label for="degradation_yr2_pct"/>
+                                        <div class="o_row">
+                                            <field name="degradation_yr2_pct"/> %
+                                        </div>
+                                        <label for="degradation_subsequent_pct"/>
+                                        <div class="o_row">
+                                            <field name="degradation_subsequent_pct"/> %
+                                        </div>
+                                    </group>
+                                    <group string="Capital &amp; Financing Cost">
+                                        <field name="total_cost_lakh"/>
+                                        <label for="equity_pct"/>
+                                        <div class="o_row">
+                                            <field name="equity_pct"/> %
+                                        </div>
+                                        <label for="debt_pct"/>
+                                        <div class="o_row">
+                                            <field name="debt_pct"/> %
+                                        </div>
+                                        <field name="equity_amount_lakh" readonly="1"/>
+                                        <field name="debt_amount_lakh" readonly="1"/>
+                                    </group>
+                                </group>
+
+                                <group>
+                                    <group string="Loan Details">
+                                        <label for="interest_rate_pct"/>
+                                        <div class="o_row">
+                                            <field name="interest_rate_pct"/> %
+                                        </div>
+                                        <field name="tenure_years"/>
+                                        <field name="emi_amount_lakh" readonly="1"/>
+                                        <field name="yearly_emi_lakh" readonly="1"/>
+                                        <field name="total_interest_paid_lakh" readonly="1"/>
+                                        <field name="total_repayment_lakh" readonly="1"/>
+                                    </group>
+                                    <group string="Subsidy &amp; Tariff Rules">
+                                        <field name="has_subsidy"/>
+                                        <field name="subsidy_amount_lakh" invisible="not has_subsidy"/>
+                                        <field name="tariff_rate"/>
+                                        <label for="tariff_escalation_pct"/>
+                                        <div class="o_row">
+                                            <field name="tariff_escalation_pct"/> %
+                                        </div>
+                                        <field name="om_cost_yr1_lakh"/>
+                                        <label for="om_escalation_pct"/>
+                                        <div class="o_row">
+                                            <field name="om_escalation_pct"/> %
+                                        </div>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page name="cashflows" string="25-Year Projection Cashflow Table">
+                                <field name="cashflow_line_ids" readonly="1" nolabel="1">
+                                    <list>
+                                        <field name="year"/>
+                                        <field name="generation_units" sum="Total Generation"/>
+                                        <field name="tariff_rate"/>
+                                        <field name="revenue_lakh" sum="Total Revenue"/>
+                                        <field name="om_expenses_lakh" sum="Total O&amp;M"/>
+                                        <field name="emi_expenses_lakh" sum="Total EMI"/>
+                                        <field name="net_profit_lakh" sum="Total Net Profit"/>
+                                        <field name="cumulative_income_lakh"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- Solar Financials List View -->
+        <record id="view_solar_financials_tree" model="ir.ui.view">
+            <field name="name">solar.financials.tree</field>
+            <field name="model">solar.financials</field>
+            <field name="arch" type="xml">
+                <list string="Solar Financial Projections">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="partner_id"/>
+                    <field name="kw_capacity"/>
+                    <field name="total_cost_lakh"/>
+                    <field name="irr_pct" widget="float"/>
+                    <field name="roi_pct" widget="float"/>
+                    <field name="total_net_profit_lakh"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Solar Financials Search View -->
+        <record id="view_solar_financials_search" model="ir.ui.view">
+            <field name="name">solar.financials.search</field>
+            <field name="model">solar.financials</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="partner_id"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_solar_financials" model="ir.actions.act_window">
+            <field name="name">Financial Analyses</field>
+            <field name="res_model">solar.financials</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_solar_financials_search"/>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_solar_financials" name="Financial Analyses" parent="menu_solar_project_root" action="action_solar_financials" sequence="30"/>
+    </data>
+</odoo>

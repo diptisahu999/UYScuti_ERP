@@ -1,0 +1,40 @@
+<odoo>
+    <record id="view_opening_balance_wizard_form" model="ir.ui.view">
+        <field name="name">opening.balance.wizard.form</field>
+        <field name="model">opening.balance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Opening Balance">
+                <group>
+                    <group> 
+                        <field name="date"/>
+                        <field name="partner_id"/>
+                    </group>
+                    <group>
+                        <field name="amount"/>
+                        <field name="account_id"/>
+                    </group>
+                </group>
+
+                <footer>
+                    <button string="Create Entry"
+                            type="object"
+                            name="action_create_entry"
+                            class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_opening_balance_wizard" model="ir.actions.act_window">
+        <field name="name">Opening Balance</field>
+        <field name="res_model">opening.balance.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_opening_balance"
+              name="Opening Balance"
+              parent="account.menu_finance"
+              action="action_opening_balance_wizard"/>
+</odoo>

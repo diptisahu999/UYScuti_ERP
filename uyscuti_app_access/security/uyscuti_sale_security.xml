@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_groups_privilege_uyscuti_app_access" model="res.groups.privilege">
+        <field name="name">App Access</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="group_app_access" model="res.groups">
+        <field name="name">App Access</field>
+        <field name="privilege_id" ref="res_groups_privilege_uyscuti_app_access"/>
+    </record>
+
+    <record id="group_restricted_sales_access" model="res.groups">
+        <field name="name">Restricted Sales User (No Invoice)</field>
+        <field name="privilege_id" ref="res_groups_privilege_uyscuti_app_access"/>
+        <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="comment">User can access CRM and Sales, create and confirm quotations, but cannot create invoices.</field>
+    </record>
+
+    <record id="group_sales_crm_delete" model="res.groups">
+        <field name="name">Delete Sales &amp; CRM Entries</field>
+        <field name="privilege_id" ref="res_groups_privilege_uyscuti_app_access"/>
+        <field name="comment">Allows user to delete Sales Orders and CRM Leads.</field>
+    </record>
+    <record id="res_groups_privilege_administration" model="res.groups.privilege">
+        <field name="name">ADMINISTRATION</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_setting_user_creation" model="res.groups">
+        <field name="name">Access Rights</field>
+        <field name="privilege_id" ref="res_groups_privilege_administration"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_erp_manager'))]"/>
+        <field name="comment">Allows access only to user creation and access rights page without full settings access.</field>
+    </record>
+
+    <record id="group_setting_full_access" model="res.groups">
+        <field name="name">Settings</field>
+        <field name="privilege_id" ref="res_groups_privilege_administration"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_system'))]"/>
+        <field name="comment">Allows full access to the Settings module including developer and technical settings.</field>
+    </record>
+</odoo>

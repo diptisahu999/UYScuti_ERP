@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="solar_om.SolarOMDashboard">
+        <div class="o_action_manager o_content bg-light p-4 h-100 overflow-auto" style="font-family: 'Inter', sans-serif;">
+            
+            <!-- Dashboard Title and Refresh Button -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold text-dark m-0">Solar O&amp;M Operational Dashboard</h2>
+                    <p class="text-muted m-0">Real-time status of your Solar Plants and maintenance engineers</p>
+                </div>
+                <button type="button" class="btn btn-primary d-flex align-items-center gap-2 px-3 py-2 shadow-sm" t-on-click="fetchData">
+                    <i class="fa fa-refresh"/>
+                    <span>Refresh Stats</span>
+                </button>
+            </div>
+
+            <!-- KPI Cards Row -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 mb-4">
+                
+                <!-- Total Plants Card -->
+                <div class="col">
+                    <div class="card border-0 shadow-sm h-100 bg-white cursor-pointer transition-transform hover-scale" t-on-click="openPlants" style="border-radius: 12px;">
+                        <div class="card-body d-flex align-items-center p-3">
+                            <div class="rounded-3 p-3 me-3 bg-primary bg-opacity-10 text-primary">
+                                <i class="fa fa-building fa-2x"/>
+                            </div>
+                            <div>
+                                <span class="text-muted d-block text-uppercase fw-semibold small">Total Solar Plants</span>
+                                <h3 class="fw-bold text-dark m-0 mt-1"><t t-esc="state.kpis.total_plants or 0"/></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Plants Card -->
+                <div class="col">
+                    <div class="card border-0 shadow-sm h-100 bg-white" style="border-radius: 12px;">
+                        <div class="card-body d-flex align-items-center p-3">
+                            <div class="rounded-3 p-3 me-3 bg-success bg-opacity-10 text-success">
+                                <i class="fa fa-check-circle fa-2x"/>
+                            </div>
+                            <div>
+                                <span class="text-muted d-block text-uppercase fw-semibold small">Active Plants</span>
+                                <h3 class="fw-bold text-success m-0 mt-1"><t t-esc="state.kpis.active_plants or 0"/></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today's Tasks Card -->
+                <div class="col">
+                    <div class="card border-0 shadow-sm h-100 bg-white cursor-pointer transition-transform hover-scale" t-on-click="openTasks" style="border-radius: 12px;">
+                        <div class="card-body d-flex align-items-center p-3">
+                            <div class="rounded-3 p-3 me-3 bg-warning bg-opacity-10 text-warning">
+                                <i class="fa fa-tasks fa-2x"/>
+                            </div>
+                            <div>
+                                <span class="text-muted d-block text-uppercase fw-semibold small">Today's Tasks</span>
+                                <h3 class="fw-bold text-warning m-0 mt-1"><t t-esc="state.kpis.todays_tasks or 0"/></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Breakdowns Card -->
+                <div class="col">
+                    <div class="card border-0 shadow-sm h-100 bg-white cursor-pointer transition-transform hover-scale" t-on-click="openBreakdowns" style="border-radius: 12px;">
+                        <div class="card-body d-flex align-items-center p-3">
+                            <div class="rounded-3 p-3 me-3 bg-danger bg-opacity-10 text-danger">
+                                <i class="fa fa-exclamation-triangle fa-2x"/>
+                            </div>
+                            <div>
+                                <span class="text-muted d-block text-uppercase fw-semibold small">Active Breakdowns</span>
+                                <h3 class="fw-bold text-danger m-0 mt-1"><t t-esc="state.kpis.breakdown_tickets or 0"/></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- KPI Row 2 (Secondary Metrics) -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3 mb-4">
+                
+                <!-- Pending Tasks -->
+                <div class="col">
+                    <div class="card border-0 shadow-sm bg-white" style="border-radius: 12px;">
+                        <div class="card-body d-flex align-items-center p-3">
+                            <div class="rounded-3 p-3 me-3 bg-secondary bg-opacity-10 text-secondary">
+                                <i class="fa fa-clock-o fa-2x"/>
+                            </div>
+                            <div>
+                                <span class="text-muted d-block text-uppercase fw-semibold small">Pending Tasks</span>
+                                <h4 class="fw-bold text-dark m-0 mt-1"><t t-esc="state.kpis.pending_tasks or 0"/></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed Tasks -->
+                <div class="col">
+                    <div class="card border-0 shadow-sm bg-white" style="border-radius: 12px;">
+                        <div class="card-body d-flex align-items-center p-3">
+                            <div class="rounded-3 p-3 me-3 bg-info bg-opacity-10 text-info">
+                                <i class="fa fa-check-square-o fa-2x"/>
+                            </div>
+                            <div>
+                                <span class="text-muted d-block text-uppercase fw-semibold small">Completed Tasks</span>
+                                <h4 class="fw-bold text-dark m-0 mt-1"><t t-esc="state.kpis.completed_tasks or 0"/></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cleaning Due -->
+                <div class="col">
+                    <div class="card border-0 shadow-sm bg-white cursor-pointer" t-on-click="openCleaning" style="border-radius: 12px;">
+                        <div class="card-body d-flex align-items-center p-3">
+                            <div class="rounded-3 p-3 me-3 bg-primary bg-opacity-10 text-primary">
+                                <i class="fa fa-tint fa-2x"/>
+                            </div>
+                            <div>
+                                <span class="text-muted d-block text-uppercase fw-semibold small">Cleaning Due</span>
+                                <h4 class="fw-bold text-dark m-0 mt-1"><t t-esc="state.kpis.cleaning_due or 0"/></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Engineers -->
+                <div class="col">
+                    <div class="card border-0 shadow-sm bg-white" style="border-radius: 12px;">
+                        <div class="card-body d-flex align-items-center p-3">
+                            <div class="rounded-3 p-3 me-3 bg-purple bg-opacity-10 text-purple" style="color: #6f42c1;">
+                                <i class="fa fa-user-circle fa-2x"/>
+                            </div>
+                            <div>
+                                <span class="text-muted d-block text-uppercase fw-semibold small">Engineers Active</span>
+                                <h4 class="fw-bold text-dark m-0 mt-1"><t t-esc="state.kpis.active_engineers or 0"/></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Charts and Activity Row -->
+            <div class="row g-4">
+                
+                <!-- Charts Column (Left) -->
+                <div class="col-12 col-lg-8">
+                    <div class="row g-4">
+                        
+                        <!-- Cleaning Status Doughnut -->
+                        <div class="col-12 col-md-6">
+                            <div class="card border-0 shadow-sm bg-white p-3 h-100" style="border-radius: 12px; min-height: 350px;">
+                                <h5 class="fw-bold text-dark mb-3">Cleaning Status Breakdown</h5>
+                                <div class="position-relative flex-grow-1" style="height: 250px;">
+                                    <canvas t-ref="cleaningChart"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Engineer Performance Bar Chart -->
+                        <div class="col-12 col-md-6">
+                            <div class="card border-0 shadow-sm bg-white p-3 h-100" style="border-radius: 12px; min-height: 350px;">
+                                <h5 class="fw-bold text-dark mb-3">Engineer Leaderboard</h5>
+                                <div class="position-relative flex-grow-1" style="height: 250px;">
+                                    <t t-if="state.engineer_performance.labels &amp;&amp; state.engineer_performance.labels.length">
+                                        <canvas t-ref="engineerChart"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="d-flex align-items-center justify-content-center h-100 text-muted">
+                                            No completed tasks to display.
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Task Completion Performance -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm bg-white p-3" style="border-radius: 12px; min-height: 350px;">
+                                <h5 class="fw-bold text-dark mb-3">Estimated vs Actual Hours (Latest 10 Maintenance Tasks)</h5>
+                                <div class="position-relative flex-grow-1" style="height: 250px;">
+                                    <t t-if="state.task_completion.labels &amp;&amp; state.task_completion.labels.length">
+                                        <canvas t-ref="completionChart"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="d-flex align-items-center justify-content-center h-100 text-muted">
+                                            No completed maintenance data.
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Feed and Quick Links Column (Right) -->
+                <div class="col-12 col-lg-4">
+                    <div class="card border-0 shadow-sm bg-white p-3 mb-4" style="border-radius: 12px; min-height: 380px;">
+                        <h5 class="fw-bold text-dark mb-3">Recent Activity Feed</h5>
+                        <div class="list-group list-group-flush">
+                            <t t-if="state.recent_activities.length">
+                                <t t-foreach="state.recent_activities" t-as="activity" t-key="activity.name + activity.date">
+                                    <div class="list-group-item bg-transparent border-0 px-0 py-3 d-flex align-items-start gap-3">
+                                        <div class="rounded-circle p-2 mt-1" 
+                                             t-attf-class="bg-opacity-10 #{activity.type == 'maintenance' ? 'bg-primary text-primary' : (activity.type == 'breakdown' ? 'bg-danger text-danger' : (activity.type == 'cleaning' ? 'bg-success text-success' : 'bg-warning text-warning'))}">
+                                            <i t-attf-class="fa #{activity.type == 'maintenance' ? 'fa-wrench' : (activity.type == 'breakdown' ? 'fa-exclamation-triangle' : (activity.type == 'cleaning' ? 'fa-tint' : 'fa-tasks'))}"/>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="fw-bold text-dark small"><t t-esc="activity.name"/></span>
+                                                <span class="text-muted small"><t t-esc="activity.date"/></span>
+                                            </div>
+                                            <p class="text-muted small m-0 mt-1"><t t-esc="activity.desc"/></p>
+                                        </div>
+                                    </div>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                <div class="d-flex align-items-center justify-content-center py-5 text-muted">
+                                    No recent activity found.
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Card -->
+                    <div class="card border-0 shadow-sm bg-white p-3" style="border-radius: 12px;">
+                        <h5 class="fw-bold text-dark mb-3">Quick Navigation Shortcuts</h5>
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-outline-primary text-start px-3 py-2 d-flex align-items-center gap-2" t-on-click="openPlants">
+                                <i class="fa fa-building"/>
+                                <span>Go to Plants Screen</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-warning text-start px-3 py-2 d-flex align-items-center gap-2" t-on-click="openMaintenance">
+                                <i class="fa fa-wrench"/>
+                                <span>Go to Maintenance Tasks</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger text-start px-3 py-2 d-flex align-items-center gap-2" t-on-click="openBreakdowns">
+                                <i class="fa fa-exclamation-triangle"/>
+                                <span>Go to Breakdown Tickets</span>
+                            </button>
+                            <button type="button" class="btn btn-outline-success text-start px-3 py-2 d-flex align-items-center gap-2" t-on-click="openCleaning">
+                                <i class="fa fa-tint"/>
+                                <span>Go to Cleaning Tasks</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Plant Template -->
+    <template id="report_solar_plant_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: 'Helvetica', sans-serif;">
+                        <div class="text-center mb-4">
+                            <h2>Solar Plant Overview</h2>
+                            <h4 class="text-primary"><t t-esc="o.name"/> (<t t-esc="o.code"/>)</h4>
+                        </div>
+                        <hr/>
+
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <strong>Client/Customer:</strong> <span t-field="o.customer_id.name"/><br/>
+                                <strong>Capacity:</strong> <span t-field="o.capacity"/> kW<br/>
+                                <strong>Installation Date:</strong> <span t-field="o.installation_date"/><br/>
+                                <strong>Warranty Expiry:</strong> <span t-field="o.warranty_expiry_date"/><br/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Manager:</strong> <span t-field="o.manager_id.name"/><br/>
+                                <strong>Location:</strong> <span t-field="o.city"/>, <span t-field="o.state_id.name"/><br/>
+                                <strong>Geo Coordinates:</strong> Lat <span t-field="o.latitude"/>, Lng <span t-field="o.longitude"/><br/>
+                                <strong>Status:</strong> <span t-field="o.status"/><br/>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4">Registered Equipment</h4>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Serial Number</th>
+                                    <th>Installation Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.equipment_ids" t-as="eq">
+                                    <tr>
+                                        <td><span t-field="eq.name"/></td>
+                                        <td><span t-field="eq.category_id.name"/></td>
+                                        <td><span t-field="eq.serial_number"/></td>
+                                        <td><span t-field="eq.installation_date"/></td>
+                                        <td><span t-field="eq.status"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Maintenance Template -->
+    <template id="report_solar_maintenance_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: 'Helvetica', sans-serif;">
+                        <div class="text-center mb-4">
+                            <h2>Preventive Maintenance Report</h2>
+                            <h4 class="text-primary"><t t-esc="o.name"/></h4>
+                        </div>
+                        <hr/>
+
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <strong>Solar Plant:</strong> <span t-field="o.plant_id.name"/><br/>
+                                <strong>Target Equipment:</strong> <span t-field="o.equipment_id.name"/><br/>
+                                <strong>Maintenance Type:</strong> <span t-field="o.maintenance_type_id.name"/><br/>
+                                <strong>Priority:</strong> <span t-field="o.priority"/><br/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Assigned Engineer:</strong> <span t-field="o.user_id.name"/><br/>
+                                <strong>Due Date:</strong> <span t-field="o.date_due"/><br/>
+                                <strong>Estimated Hours:</strong> <span t-field="o.estimated_hours"/><br/>
+                                <strong>Actual Hours:</strong> <span t-field="o.actual_hours"/><br/>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4">Maintenance Checklist Status</h4>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Status</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.checklist_line_ids" t-as="ch">
+                                    <tr>
+                                        <td><span t-field="ch.name"/></td>
+                                        <td><span t-field="ch.status"/></td>
+                                        <td><span t-field="ch.remarks"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <div class="row mt-5">
+                            <div class="col-6">
+                                <strong>General Remarks:</strong><br/>
+                                <p t-field="o.remarks"/>
+                            </div>
+                            <div class="col-6 text-center">
+                                <strong>Digital Signature:</strong><br/>
+                                <t t-if="o.signature">
+                                    <img t-att-src="image_data_uri(o.signature)" style="max-height: 80px;"/>
+                                </t>
+                                <t t-else="">
+                                    <span class="text-muted">Not Signed</span>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Breakdown Template -->
+    <template id="report_solar_breakdown_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: 'Helvetica', sans-serif;">
+                        <div class="text-center mb-4">
+                            <h2>Breakdown Ticket Summary</h2>
+                            <h4 class="text-primary"><t t-esc="o.name"/></h4>
+                        </div>
+                        <hr/>
+
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <strong>Solar Plant:</strong> <span t-field="o.plant_id.name"/><br/>
+                                <strong>Equipment:</strong> <span t-field="o.equipment_id.name"/><br/>
+                                <strong>Issue Type:</strong> <span t-field="o.issue_type_id.name"/><br/>
+                                <strong>Priority:</strong> <span t-field="o.priority"/><br/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Assigned Engineer:</strong> <span t-field="o.user_id.name"/><br/>
+                                <strong>SLA Deadline:</strong> <span t-field="o.sla_deadline"/><br/>
+                                <strong>Downtime recorded:</strong> <span t-field="o.downtime"/> Hours<br/>
+                                <strong>Root Cause:</strong> <span t-field="o.failure_reason_id.name"/><br/>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <strong>Issue Description:</strong>
+                            <p class="border p-2 bg-light"><span t-field="o.description"/></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <strong>Resolution Action:</strong>
+                            <p class="border p-2 bg-light"><span t-field="o.resolution"/></p>
+                        </div>
+
+                        <div class="mb-4">
+                            <strong>Corrective Action Taken:</strong>
+                            <p class="border p-2 bg-light"><span t-field="o.corrective_action"/></p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Cleaning Template -->
+    <template id="report_solar_cleaning_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-family: 'Helvetica', sans-serif;">
+                        <div class="text-center mb-4">
+                            <h2>Cleaning Task Report</h2>
+                            <h4 class="text-primary"><t t-esc="o.name"/></h4>
+                        </div>
+                        <hr/>
+
+                        <div class="row mb-4">
+                            <div class="col-6">
+                                <strong>Solar Plant:</strong> <span t-field="o.plant_id.name"/><br/>
+                                <strong>Cleaning Type:</strong> <span t-field="o.cleaning_type_id.name"/><br/>
+                                <strong>Frequency:</strong> <span t-field="o.frequency"/><br/>
+                                <strong>Water Consumption:</strong> <span t-field="o.water_consumption"/> Liters<br/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Assigned Engineer:</strong> <span t-field="o.user_id.name"/><br/>
+                                <strong>Completion Time:</strong> <span t-field="o.completion_time"/><br/>
+                                <strong>Geo Location:</strong> Lat <span t-field="o.latitude"/>, Lng <span t-field="o.longitude"/><br/>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4">Cleaning Checklist Status</h4>
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Status</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.checklist_line_ids" t-as="ch">
+                                    <tr>
+                                        <td><span t-field="ch.name"/></td>
+                                        <td><span t-field="ch.status"/></td>
+                                        <td><span t-field="ch.remarks"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <div class="row mt-4">
+                            <div class="col-6 text-center">
+                                <strong>Before Cleaning:</strong><br/>
+                                <t t-if="o.before_image">
+                                    <img t-att-src="image_data_uri(o.before_image)" style="max-height: 150px; max-width: 100%; border: 1px solid #ccc;"/>
+                                </t>
+                                <t t-else="">
+                                    <span class="text-muted">No Image uploaded</span>
+                                </t>
+                            </div>
+                            <div class="col-6 text-center">
+                                <strong>After Cleaning:</strong><br/>
+                                <t t-if="o.after_image">
+                                    <img t-att-src="image_data_uri(o.after_image)" style="max-height: 150px; max-width: 100%; border: 1px solid #ccc;"/>
+                                </t>
+                                <t t-else="">
+                                    <span class="text-muted">No Image uploaded</span>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

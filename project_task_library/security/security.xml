@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Define New Security Group: Manager -->
+        <record id="group_project_custom_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="sequence">2</field>
+            <field name="privilege_id" ref="project.res_groups_privilege_project"/>
+            <field name="implied_ids" eval="[(4, ref('project.group_project_user'))]"/>
+        </record>
+
+        <!-- Define New Security Group: General Manager -->
+        <record id="group_project_general_manager" model="res.groups">
+            <field name="name">General Manager</field>
+            <field name="sequence">3</field>
+            <field name="privilege_id" ref="project.res_groups_privilege_project"/>
+            <field name="implied_ids" eval="[(4, ref('group_project_custom_manager'))]"/>
+        </record>
+
+        <!-- Update Standard Administrator Group to inherit General Manager -->
+        <record id="project.group_project_manager" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="sequence">4</field>
+            <field name="privilege_id" ref="project.res_groups_privilege_project"/>
+            <field name="implied_ids" eval="[(4, ref('group_project_general_manager'))]"/>
+        </record>
+
+        <!-- Rule for Project Task Template: User -->
+        <record id="rule_project_task_template_user_own" model="ir.rule">
+            <field name="name">Project Task Template: See Own Assigned</field>
+            <field name="model_id" ref="model_project_task_template"/>
+            <field name="domain_force">[('user_ids', 'in', user.id)]</field>
+            <field name="groups" eval="[(4, ref('project.group_project_user'))]"/>
+        </record>
+
+        <!-- Rule for Project Task Template: Manager -->
+        <record id="rule_project_task_template_manager_all" model="ir.rule">
+            <field name="name">Project Task Template: Manager See All</field>
+            <field name="model_id" ref="model_project_task_template"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_project_custom_manager'))]"/>
+        </record>
+
+        <!-- ==================== RECORD RULES FOR PROJECT (project.project) ==================== -->
+
+        <!-- 1. Administrator: See, create, edit, delete all projects -->
+        <record id="rule_project_project_admin_all" model="ir.rule">
+            <field name="name">Project: Administrator All Access</field>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('project.group_project_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- 2. Manager: Create projects & see/edit only own projects (No Delete) -->
+        <record id="rule_project_project_manager_own" model="ir.rule">
+            <field name="name">Project: Manager Own Projects</field>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="domain_force">['|', ('user_id', '=', user.id), ('create_uid', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_project_custom_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- 3. General Manager: See all projects, update them, CANNOT delete -->
+        <record id="rule_project_project_general_manager" model="ir.rule">
+            <field name="name">Project: General Manager All Access (No Delete)</field>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_project_general_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- 4. User: See projects where user has assigned tasks; CANNOT create, write, or delete -->
+        <record id="rule_project_project_user_read_only" model="ir.rule">
+            <field name="name">Project: User Assigned Tasks Only (Read-Only)</field>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="domain_force">[('task_ids.user_ids', 'in', user.id)]</field>
+            <field name="groups" eval="[(4, ref('project.group_project_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- ==================== RECORD RULES FOR TASKS (project.task) ==================== -->
+
+        <!-- 1. Administrator: Full access to all tasks -->
+        <record id="rule_project_task_admin_all" model="ir.rule">
+            <field name="name">Project Task: Administrator All Access</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('project.group_project_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- 2. General Manager: See all tasks, update/create/delete them -->
+        <record id="rule_project_task_general_manager" model="ir.rule">
+            <field name="name">Project Task: General Manager All Access</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_project_general_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- 3. Manager: Create, edit, delete tasks in own projects or assigned tasks -->
+        <record id="rule_project_task_manager_own" model="ir.rule">
+            <field name="name">Project Task: Manager Own Projects &amp; Tasks</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="domain_force">['|', '|', ('project_id.user_id', '=', user.id), ('project_id.create_uid', '=', user.id), ('user_ids', 'in', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_project_custom_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- 4. User: See assigned tasks; CANNOT create or delete; write allowed for state updates -->
+        <record id="rule_project_task_user_assigned" model="ir.rule">
+            <field name="name">Project Task: User Assigned Tasks Only</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="domain_force">[('user_ids', 'in', user.id)]</field>
+            <field name="groups" eval="[(4, ref('project.group_project_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+    </data>
+</odoo>
+

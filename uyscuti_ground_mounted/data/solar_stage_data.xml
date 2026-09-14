@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Explicitly delete the duplicate stage permissions from the ground mounted module namespace -->
+        <delete model="solar.stage.permission" id="stage_gm_project_apply"/>
+        <delete model="solar.stage.permission" id="stage_gm_discom_app"/>
+        <delete model="solar.stage.permission" id="stage_gm_akshay_urja"/>
+        <delete model="solar.stage.permission" id="stage_gm_doc_submit"/>
+        <delete model="solar.stage.permission" id="stage_gm_fees_pay"/>
+        <delete model="solar.stage.permission" id="stage_gm_approval"/>
+        <delete model="solar.stage.permission" id="stage_gm_discom_agreement"/>
+        <delete model="solar.stage.permission" id="stage_gm_land"/>
+        <delete model="solar.stage.permission" id="stage_gm_design"/>
+        <delete model="solar.stage.permission" id="stage_gm_bom"/>
+        <delete model="solar.stage.permission" id="stage_gm_vendor_select"/>
+        <delete model="solar.stage.permission" id="stage_gm_store_incharge"/>
+        <delete model="solar.stage.permission" id="stage_gm_authorised_person"/>
+        <delete model="solar.stage.permission" id="stage_gm_mms_report"/>
+        <delete model="solar.stage.permission" id="stage_gm_blockwise_reconcile"/>
+        <delete model="solar.stage.permission" id="stage_gm_tasklist"/>
+        <delete model="solar.stage.permission" id="stage_gm_qc"/>
+    </data>
+</odoo>

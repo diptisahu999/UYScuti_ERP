@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- TERRACE TYPE -->
+    <record id="view_solar_terrace_type_tree" model="ir.ui.view">
+        <field name="name">solar.terrace.type.tree</field>
+        <field name="model">solar.terrace.type</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_solar_terrace_type" model="ir.actions.act_window">
+        <field name="name">Terrace Type</field>
+        <field name="res_model">solar.terrace.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- MODULE MAKE -->
+    <record id="view_solar_module_make_tree" model="ir.ui.view">
+        <field name="name">solar.module.make.tree</field>
+        <field name="model">solar.module.make</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_solar_module_make" model="ir.actions.act_window">
+        <field name="name">Module Make</field>
+        <field name="res_model">solar.module.make</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- MODULE TYPE -->
+    <record id="view_solar_module_type_tree" model="ir.ui.view">
+        <field name="name">solar.module.type.tree</field>
+        <field name="model">solar.module.type</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_solar_module_type" model="ir.actions.act_window">
+        <field name="name">Module Type</field>
+        <field name="res_model">solar.module.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- WP -->
+    <record id="view_solar_module_wp_tree" model="ir.ui.view">
+        <field name="name">solar.module.wp.tree</field>
+        <field name="model">solar.module.wp</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_solar_module_wp" model="ir.actions.act_window">
+        <field name="name">WP</field>
+        <field name="res_model">solar.module.wp</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- SYSTEM STRENGTH CONFIG -->
+    <record id="view_solar_system_strength_config_tree" model="ir.ui.view">
+        <field name="name">solar.system.strength.config.tree</field>
+        <field name="model">solar.system.strength.config</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="min_kw"/>
+                <field name="max_kw"/>
+                <field name="fixed_fee"/>
+                <field name="per_kw_fee"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_solar_system_strength_config" model="ir.actions.act_window">
+        <field name="name">System Strength Config</field>
+        <field name="res_model">solar.system.strength.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- DISCOM VIEW ENHANCEMENT (With Rules) -->
+    <record id="view_solar_discom_form" model="ir.ui.view">
+        <field name="name">solar.discom.form</field>
+        <field name="model">solar.discom</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <notebook>
+                        <page name="fees" string="Discom Fees">
+                            <field name="fee_ids">
+                                <list editable="bottom">
+                                    <field name="sanction_phase"/>
+                                    <field name="load_phase"/>
+                                    <field name="min_kw"/>
+                                    <field name="max_kw"/>
+                                    <field name="fee"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_solar_discom_tree_v2" model="ir.ui.view">
+        <field name="name">solar.discom.tree</field>
+        <field name="model">solar.discom</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_solar_discom_v2" model="ir.actions.act_window">
+        <field name="name">Discom Configuration</field>
+        <field name="res_model">solar.discom</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- MENUS -->
+    <menuitem id="menu_solar_config_root"
+              name="Solar Masters"
+              parent="crm.crm_menu_config"
+              sequence="50"/>
+
+    <menuitem id="menu_solar_discom"
+              name="Discom"
+              parent="menu_solar_config_root"
+              action="action_solar_discom_v2"
+              sequence="10"/>
+
+    <menuitem id="menu_solar_system_strength"
+              name="System Strength Config"
+              parent="menu_solar_config_root"
+              action="action_solar_system_strength_config"
+              sequence="15"/>
+
+    <menuitem id="menu_solar_terrace_type"
+              name="Terrace Type"
+              parent="menu_solar_config_root"
+              action="action_solar_terrace_type"
+              sequence="20"/>
+
+    <menuitem id="menu_solar_module_make"
+              name="Module Make"
+              parent="menu_solar_config_root"
+              action="action_solar_module_make"
+              sequence="30"/>
+
+    <menuitem id="menu_solar_module_type"
+              name="Module Type"
+              parent="menu_solar_config_root"
+              action="action_solar_module_type"
+              sequence="40"/>
+
+    <menuitem id="menu_solar_module_wp"
+              name="WP"
+              parent="menu_solar_config_root"
+              action="action_solar_module_wp"
+              sequence="50"/>
+</odoo>

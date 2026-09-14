@@ -1,0 +1,30 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8069:8069"
+      - "8072:8072"
+    depends_on:
+      - db
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - .:/mnt/extra-addons
+      - ./odoo.conf:/etc/odoo/odoo.conf
+    environment:
+      - HOST=${DB_HOST:-db}
+      - USER=${DB_USER:-odoo19}
+      - PASSWORD=${DB_PASSWORD:-root}
+    command: odoo -c /etc/odoo/odoo.conf
+
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=${DB_NAME:-postgres}
+      - POSTGRES_USER=${DB_USER:-odoo19}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-root}
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+
+volumes:
+  odoo-web-data:
+  odoo-db-data:

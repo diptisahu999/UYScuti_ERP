@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="menu_solar_om_root"
+              name="Solar O&amp;M"
+              web_icon="solar_om,static/description/icon.png"
+              sequence="10"/>
+
+    <!-- Top-Level Menus -->
+    <!-- Dashboard -->
+    <menuitem id="menu_solar_om_dashboard"
+              name="Dashboard"
+              parent="menu_solar_om_root"
+              action="action_solar_om_dashboard"
+              sequence="10"/>
+
+    <!-- Solar Plants -->
+    <menuitem id="menu_solar_om_plants"
+              name="Solar Plants"
+              parent="menu_solar_om_root"
+              action="action_solar_plant"
+              sequence="20"/>
+
+    <!-- Maintenance -->
+    <menuitem id="menu_solar_om_maintenance"
+              name="Maintenance"
+              parent="menu_solar_om_root"
+              action="action_solar_maintenance"
+              sequence="30"/>
+
+    <!-- Cleaning -->
+    <menuitem id="menu_solar_om_cleaning"
+              name="Cleaning"
+              parent="menu_solar_om_root"
+              action="action_solar_cleaning"
+              sequence="40"/>
+
+    <!-- Breakdown -->
+    <menuitem id="menu_solar_om_breakdown"
+              name="Breakdown"
+              parent="menu_solar_om_root"
+              action="action_solar_breakdown"
+              sequence="50"/>
+
+    <!-- Tasks -->
+    <menuitem id="menu_solar_om_tasks"
+              name="Tasks"
+              parent="menu_solar_om_root"
+              action="action_solar_task"
+              sequence="60"/>
+
+    <!-- Reports -->
+    <menuitem id="menu_solar_om_reports"
+              name="Reports"
+              parent="menu_solar_om_root"
+              sequence="70"/>
+
+    <!-- Reports Submenus -->
+    <menuitem id="menu_solar_om_report_generation"
+              name="Monthly Generation Report"
+              parent="menu_solar_om_reports"
+              action="action_solar_monthly_generation_wizard"
+              sequence="10"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_solar_om_config"
+              name="Configuration"
+              parent="menu_solar_om_root"
+              sequence="80"/>
+
+    <!-- Configuration -> Master Data -->
+    <menuitem id="menu_solar_om_master_data"
+              name="Master Data"
+              parent="menu_solar_om_config"
+              sequence="10"/>
+
+    <!-- Master Data Submenus -->
+    <menuitem id="menu_solar_om_md_plants"
+              name="Plants"
+              parent="menu_solar_om_master_data"
+              action="action_solar_plant"
+              sequence="10"/>
+
+    <menuitem id="menu_solar_om_md_eq_cat"
+              name="Equipment Categories"
+              parent="menu_solar_om_master_data"
+              action="action_solar_equipment_category"
+              sequence="20"/>
+
+    <menuitem id="menu_solar_om_md_eq"
+              name="Equipment"
+              parent="menu_solar_om_master_data"
+              action="action_solar_equipment"
+              sequence="30"/>
+
+    <menuitem id="menu_solar_om_md_mt_type"
+              name="Maintenance Types"
+              parent="menu_solar_om_master_data"
+              action="action_solar_maintenance_type"
+              sequence="40"/>
+
+    <menuitem id="menu_solar_om_md_cl_type"
+              name="Cleaning Types"
+              parent="menu_solar_om_master_data"
+              action="action_solar_cleaning_type"
+              sequence="50"/>
+
+    <menuitem id="menu_solar_om_md_checklist"
+              name="Checklist Templates"
+              parent="menu_solar_om_master_data"
+              action="action_solar_checklist_template"
+              sequence="60"/>
+
+    <menuitem id="menu_solar_om_md_issue"
+              name="Issue Types"
+              parent="menu_solar_om_master_data"
+              action="action_solar_issue_type"
+              sequence="70"/>
+
+    <menuitem id="menu_solar_om_md_priority"
+              name="Priorities"
+              parent="menu_solar_om_master_data"
+              action="action_solar_priority"
+              sequence="80"/>
+
+    <menuitem id="menu_solar_om_md_failure"
+              name="Failure Reasons"
+              parent="menu_solar_om_master_data"
+              action="action_solar_failure_reason"
+              sequence="90"/>
+
+    <menuitem id="menu_solar_om_md_task_stage"
+              name="Task Stages"
+              parent="menu_solar_om_master_data"
+              action="action_solar_task_stage"
+              sequence="100"/>
+</odoo>

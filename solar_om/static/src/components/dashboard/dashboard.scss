@@ -1,0 +1,33 @@
+/* Custom Solar O&M Dashboard Styling */
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.transition-transform {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.hover-scale:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Scrollbar tweaks */
+.o_content.overflow-auto::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.o_content.overflow-auto::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.o_content.overflow-auto::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+}
+
+.o_content.overflow-auto::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.25);
+}

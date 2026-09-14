@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sequence for Proposal Reference -->
+    <record id="seq_solar_gm_proposal" model="ir.sequence">
+        <field name="name">Ground Mounted Proposal Sequence</field>
+        <field name="code">solar.gm.proposal</field>
+        <field name="prefix">GMP/</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Tree View for Proposal -->
+    <record id="view_solar_gm_proposal_tree" model="ir.ui.view">
+        <field name="name">solar.gm.proposal.tree</field>
+        <field name="model">solar.gm.proposal</field>
+        <field name="arch" type="xml">
+            <list string="Customer Proposals">
+                <field name="name"/>
+                <field name="customer_name"/>
+                <field name="customer_mobile"/>
+                <field name="capacity_mw" string="Capacity (MW)"/>
+                <field name="total_cost_lakh" string="Total Cost (Lakh)"/>
+                <field name="create_date" string="Date Created"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View for Proposal -->
+    <record id="view_solar_gm_proposal_form" model="ir.ui.view">
+        <field name="name">solar.gm.proposal.form</field>
+        <field name="model">solar.gm.proposal</field>
+        <field name="arch" type="xml">
+            <form string="Customer Proposal">
+                <header>
+                    <button name="action_recalculate_projections" 
+                            string="Recalculate Projections" 
+                            type="object" 
+                            class="btn-primary" 
+                            icon="fa-refresh"/>
+                    <button name="%(uyscuti_ground_mounted.action_report_solar_gm_proposal)d" 
+                            string="Print Proposal" 
+                            type="action" 
+                            class="btn-secondary" 
+                            icon="fa-print"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <!-- Top level primary details -->
+                    <group string="Primary Customer Information">
+                        <group>
+                            <field name="customer_name" placeholder="Enter Customer Name..."/>
+                            <field name="customer_mobile" placeholder="Enter Customer Mobile..."/>
+                            <field name="lead_id" readonly="1" options="{'no_open': False}"/>
+                        </group>
+                        <group>
+                            <field name="partner_id" options="{'no_create': True}"/>
+                            <field name="remark" placeholder="Enter Remark..."/>
+                        </group>
+                    </group>
+
+                    <!-- Double-Column Calculation Worksheet -->
+                    <div class="row">
+                        <!-- LEFT COLUMN: SIZING & PARTICULARS -->
+                        <div class="col-md-6 pr-md-4" style="border-right: 1px solid #dee2e6;">
+                            <h3 class="o_horizontal_separator text-primary my-3">1. Sizing &amp; Particulars</h3>
+                            <group col="2">
+                                <field name="consumer_type" required="1"/>
+                                <field name="power_boundary" required="1"/>
+                                <field name="duty_status" required="1"/>
+                                
+                                <field name="contract_demand" style="background-color: #fff9db; font-weight: bold;"/>
+                                <field name="existing_solar_capacity" style="background-color: #fff9db; font-weight: bold;"/>
+                                <field name="monthly_usage" style="background-color: #fff9db; font-weight: bold;"/>
+                                <field name="monthly_bill" style="background-color: #fff9db; font-weight: bold;"/>
+                                
+                                <field name="project_type" required="1"/>
+                                <field name="discom_drawl_id" required="1" options="{'no_create': True}"/>
+                                <field name="discom_injection_id" required="1" options="{'no_create': True}"/>
+                                
+                                <field name="monthly_req_units_daytime" readonly="1"/>
+                                <field name="losses_compensation_pct" readonly="1"/>
+                                <field name="req_units_from_solar" readonly="1"/>
+                                <field name="suggested_capacity_dc" readonly="1"/>
+                                <field name="actual_capacity_dc" style="background-color: #fff9db; font-weight: bold;"/>
+                            </group>
+                        </div>
+
+                        <!-- RIGHT COLUMN: SOLAR PLANT CAPACITY (DC) & CHARGES (MW) -->
+                        <div class="col-md-6 pl-md-4">
+                            <h3 class="o_horizontal_separator text-primary my-3">2. Grid Overhead / DISCOM Charges</h3>
+                            <group col="2">
+                                <field name="capacity_mw" string="Enter Plant Capacity (DC) in MW" style="background-color: #fff9db; font-weight: bold; font-size: 1.2rem;"/>
+                                <field name="daily_gen_point" string="Generation Point (Daily kWh)" readonly="1"/>
+                                
+                                <label for="wheeling_loss_pct" string="Wheeling Losses"/>
+                                <div class="o_row">
+                                    <field name="wheeling_loss_pct" style="background-color: #fff9db;" placeholder="Loss %"/> <span>%</span>
+                                    <field name="wheeling_loss_units" readonly="1" placeholder="Daily kWh"/> <span>kWh</span>
+                                </div>
+
+                                <label for="wheeling_charge_rate" string="Wheeling Charges"/>
+                                <div class="o_row col-md-12 p-0">
+                                    <field name="wheeling_charge_units" readonly="1" style="width: 30%;"/> <span>kWh |</span>
+                                    <field name="wheeling_charge_rate" style="background-color: #fff9db; width: 25%;" placeholder="Rate"/> <span>Rs. |</span>
+                                    <field name="wheeling_charge_rs" readonly="1" style="width: 35%; font-weight: bold;"/> <span>Rs.</span>
+                                </div>
+
+                                <label for="trans_loss_pct" string="Transmission Losses"/>
+                                <div class="o_row">
+                                    <field name="trans_loss_pct" style="background-color: #fff9db;" placeholder="Loss %"/> <span>%</span>
+                                    <field name="trans_loss_units" readonly="1" placeholder="Daily kWh"/> <span>kWh</span>
+                                </div>
+
+                                <label for="scheduling_charge_rate" string="Scheduling Charges"/>
+                                <div class="o_row col-md-12 p-0">
+                                    <span style="width: 30%;">Capacity Factor</span>
+                                    <field name="scheduling_charge_rate" style="background-color: #fff9db; width: 25%;" placeholder="Rate"/> <span>Rs. |</span>
+                                    <field name="scheduling_charge_rs" readonly="1" style="width: 35%; font-weight: bold;"/> <span>Rs.</span>
+                                </div>
+
+                                <label for="trans_charge_rate" string="Transmission Charges"/>
+                                <div class="o_row col-md-12 p-0">
+                                    <field name="trans_charge_units" readonly="1" style="width: 30%;"/> <span>kWh |</span>
+                                    <field name="trans_charge_rate" style="background-color: #fff9db; width: 25%;" placeholder="Rate"/> <span>Rs. |</span>
+                                    <field name="trans_charge_rs" readonly="1" style="width: 35%; font-weight: bold;"/> <span>Rs.</span>
+                                </div>
+
+                                <label for="sec_wheeling_loss_pct" string="Secondary Wheeling Losses"/>
+                                <div class="o_row">
+                                    <field name="sec_wheeling_loss_pct" style="background-color: #fff9db;" placeholder="Loss %"/> <span>%</span>
+                                    <field name="sec_wheeling_loss_units" readonly="1" placeholder="Daily kWh"/> <span>kWh</span>
+                                </div>
+
+                                <label for="sec_wheeling_charge_rate" string="Secondary Wheeling Charges"/>
+                                <div class="o_row col-md-12 p-0">
+                                    <field name="sec_wheeling_charge_units" readonly="1" style="width: 30%;"/> <span>kWh |</span>
+                                    <field name="sec_wheeling_charge_rate" style="background-color: #fff9db; width: 25%;" placeholder="Rate"/> <span>Rs. |</span>
+                                    <field name="sec_wheeling_charge_rs" readonly="1" style="width: 35%; font-weight: bold;"/> <span>Rs.</span>
+                                </div>
+
+                                <label for="banking_charge_units" string="Banking Charges"/>
+                                <div class="o_row col-md-12 p-0">
+                                    <field name="banking_charge_units" style="background-color: #fff9db; width: 30%;"/> <span>Units |</span>
+                                    <field name="banking_charge_rate" style="background-color: #fff9db; width: 25%;" placeholder="Rate"/> <span>Rs. |</span>
+                                    <field name="banking_charge_rs" readonly="1" style="width: 35%; font-weight: bold;"/> <span>Rs.</span>
+                                </div>
+
+                                <field name="net_losses_pct" string="Net Losses in %" readonly="1" class="text-danger font-weight-bold"/>
+                                <field name="total_grid_charges_rs" string="Total Charges (Daily Rs.)" readonly="1" class="text-success font-weight-bold"/>
+                            </group>
+                        </div>
+                    </div>
+
+                    <!-- FIXED CHARGES & INCOME TARIFFS -->
+                    <h3 class="o_horizontal_separator text-primary my-4">3. Fixed Tariff &amp; Unit Costs</h3>
+                    <div class="row">
+                        <div class="col-md-6 pr-md-4" style="border-right: 1px solid #dee2e6;">
+                            <group string="Contract Demand Block Fixed Charges">
+                                <field name="fixed_charge_1" style="background-color: #fff9db;" placeholder="Enter for 1st 500 kVA"/>
+                                <field name="fixed_charge_2" style="background-color: #fff9db;" placeholder="Enter for 2nd 500 kVA"/>
+                                <field name="fixed_charge_3" style="background-color: #fff9db;" placeholder="Enter Above 1000 kVA"/>
+                                <field name="fixed_charge_total" readonly="1" class="font-weight-bold"/>
+                            </group>
+                        </div>
+                        <div class="col-md-6 pl-md-4">
+                            <group string="Tariff / Cost Realization Matrix">
+                                <field name="per_unit_cost_incl_fc" readonly="1"/>
+                                <field name="per_unit_cost_excl_fc" readonly="1"/>
+                                <field name="per_unit_cost_wheeling" readonly="1"/>
+                                <field name="income_solar_gen" readonly="1" class="font-weight-bold text-success"/>
+                            </group>
+                        </div>
+                    </div>
+
+                    <!-- COST ESTIMATION & FINANCING -->
+                    <div class="row mt-4">
+                        <!-- BOTTOM LEFT: PROJECT CAPITAL COST -->
+                        <div class="col-md-6 pr-md-4" style="border-right: 1px solid #dee2e6;">
+                            <h3 class="o_horizontal_separator text-primary my-3">4. Capital Expenditure (CAPEX)</h3>
+                            <group col="2">
+                                <field name="capacity_mw" readonly="1"/>
+                                <field name="annual_power_gen_mwh" readonly="1"/>
+                                <field name="degradation_yr1" style="background-color: #fff9db;"/>
+                                <field name="degradation_after_yr2" style="background-color: #fff9db;"/>
+                                <field name="cumulative_losses_pct" readonly="1"/>
+                                <field name="land_req_acre_per_mw" style="background-color: #fff9db;"/>
+                                <field name="ss_distance_km" style="background-color: #fff9db;"/>
+                                <field name="electricity_income_rate" style="background-color: #fff9db;"/>
+                                <field name="capital_cost_per_mw" style="background-color: #fff9db;"/>
+                                <field name="land_cost_per_acre" style="background-color: #fff9db;"/>
+                                <field name="transmission_line_cost_per_km" style="background-color: #fff9db;"/>
+                                <field name="other_dev_cost_per_mw" style="background-color: #fff9db;"/>
+                                
+                                <field name="solar_plant_cost_lakh" readonly="1"/>
+                                <field name="total_land_cost_lakh" readonly="1"/>
+                                <field name="total_line_cost_lakh" readonly="1"/>
+                                <field name="other_misc_expenses_lakh" readonly="1"/>
+                                <field name="total_cost_lakh" string="TOTAL PROJECT COST" class="text-primary font-weight-bold" style="font-size:1.15rem;" readonly="1"/>
+                            </group>
+                        </div>
+
+                        <!-- BOTTOM RIGHT: MAINTENANCE, LOAN & EMI -->
+                        <div class="col-md-6 pl-md-4">
+                            <h3 class="o_horizontal_separator text-primary my-3">5. Operations &amp; Financing (OPEX &amp; Loan)</h3>
+                            <group col="2">
+                                <field name="om_cost_per_mw" style="background-color: #fff9db;"/>
+                                <field name="om_cost_yr1" readonly="1"/>
+                                <field name="om_increment_pct" style="background-color: #fff9db;"/>
+                                <field name="om_increment_interval" style="background-color: #fff9db;"/>
+                                
+                                <field name="land_lease_cost_yr1" style="background-color: #fff9db;"/>
+                                <field name="land_lease_increment_pct" style="background-color: #fff9db;"/>
+                                <field name="land_lease_increment_interval" style="background-color: #fff9db;"/>
+                                
+                                <field name="total_maintenance_cost_lakh" readonly="1" class="font-weight-bold"/>
+                                
+                                <field name="debt_amount_lakh" readonly="1"/>
+                                <field name="equity_amount_lakh" readonly="1"/>
+                                <field name="principal_lakh" readonly="1"/>
+                                
+                                <field name="interest_rate_pct" style="background-color: #fff9db;"/>
+                                <field name="tenure_years" style="background-color: #fff9db;"/>
+                                
+                                <field name="emi_amount_lakh" readonly="1"/>
+                                <field name="yearly_emi_lakh" readonly="1" class="font-weight-bold"/>
+                                <field name="total_repayment_lakh" readonly="1"/>
+                                <field name="total_interest_paid_lakh" readonly="1" class="font-weight-bold text-danger"/>
+                            </group>
+                        </div>
+                    </div>
+
+                    <!-- 25-YEAR PROFITABILITY PROJECTION TABLE -->
+                    <notebook class="mt-4">
+                        <page name="projection_sheet" string="25-Year Profitability Cash-Flow Matrix">
+                            <field name="projection_line_ids" readonly="1">
+                                <list create="0" delete="0" edit="0" string="Projection Lines">
+                                    <field name="year"/>
+                                    <field name="received_units" string="Received Units"/>
+                                    <field name="rate_kwh" string="Rate/kWh"/>
+                                    <field name="yearly_revenue" string="Yly. Revenue (Lakh)"/>
+                                    <field name="grid_expenses" string="Grid Expenses (Lakh)"/>
+                                    <field name="om_expenses" string="O&amp;M Exp (Lakh)"/>
+                                    <field name="land_lease" string="Land Lease (Lakh)"/>
+                                    <field name="emi" string="EMI (Lakh)"/>
+                                    <field name="net_income" string="Net Income (Lakh)"/>
+                                    <field name="gst_input_credit" string="GST Credit (Lakh)"/>
+                                    <field name="cumulative_income" string="Cumulative Income (Lakh)" class="font-weight-bold text-success"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+                <!-- Chatter -->
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_solar_gm_proposal_search" model="ir.ui.view">
+        <field name="name">solar.gm.proposal.search</field>
+        <field name="model">solar.gm.proposal</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="customer_name"/>
+                <field name="customer_mobile"/>
+                <filter name="cpp" string="CPP Projects" domain="[('project_type', '=', 'cpp')]"/>
+                <filter name="group_consumer_type" string="Consumer Type" context="{'group_by':'consumer_type'}"/>
+                <filter name="group_project_type" string="Project Type" context="{'group_by':'project_type'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_solar_gm_proposal" model="ir.actions.act_window">
+        <field name="name">Ground Mounted Proposals</field>
+        <field name="res_model">solar.gm.proposal</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_solar_gm_proposal_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Ground Mounted Solar Customer Proposal!
+            </p>
+            <p>
+                Enter the client requirements, power boundaries, and DISCOMs to generate an instant 25-year financial ROI model.
+            </p>
+        </field>
+    </record>
+
+    <!-- Add menu item under CRM Sales/Pipeline -->
+    <menuitem id="menu_solar_gm_proposal"
+              name="GM Proposals"
+              parent="crm.crm_menu_sales"
+              action="action_solar_gm_proposal"
+              sequence="2"/>
+</odoo>

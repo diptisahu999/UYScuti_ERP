@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- User Form Inheritance for Solar Stage Permissions -->
+    <record id="view_users_form_inherit_solar_stage" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.solar.stage</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Solar Project Access" name="solar_access">
+                    <group>
+                        <group string="Allowed Stages">
+                            <field name="solar_stage_ids" widget="many2many_checkboxes" nolabel="1"/>
+                        </group>
+                        <group string="Quotation Permissions">
+                            <field name="can_edit_confirmed_quotation"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- List View for Solar Stage Permissions (Optional but helpful) -->
+    <record id="view_solar_stage_permission_tree" model="ir.ui.view">
+        <field name="name">solar.stage.permission.tree</field>
+        <field name="model">solar.stage.permission</field>
+        <field name="arch" type="xml">
+            <list string="Solar Stage Permissions" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_solar_stage_permission" model="ir.actions.act_window">
+        <field name="name">Solar Stage Permissions</field>
+        <field name="res_model">solar.stage.permission</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Add to Settings menu or similar if needed -->
+    <menuitem id="menu_solar_stage_permission"
+              name="Solar Stage Permissions"
+              parent="sale.menu_sale_config"
+              action="action_solar_stage_permission"
+              sequence="100"/>
+</odoo>

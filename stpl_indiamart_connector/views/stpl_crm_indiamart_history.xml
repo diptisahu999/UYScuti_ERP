@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="crm_indiamart_history_list" model="ir.ui.view">
+            <field name="name">crm_indiamart_history_tree</field>
+            <field name="model">crm.indiamart.history</field>
+            <field name="arch" type="xml">
+                <list string="Lead IndiaMart History" edit="0" create="false" delete="false">
+                    <field name="company_id"/>
+                    <field name="start_datetime"/>
+                    <field name="end_datetime"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="crm_indiamart_history_form" model="ir.ui.view">
+            <field name="name">crm_indiamart_history_form</field>
+            <field name="model">crm.indiamart.history</field>
+            <field name="arch" type="xml">
+                <form string="Lead IndiaMart History" edit="0" create="false" delete="false">
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="company_id" options='{"no_open": True}'/>
+                            </group>
+                            <group>
+                                <field name="start_datetime"/>
+                                <field name="end_datetime"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Leads">
+                                <field name="lead_ids">
+                                    <list string="Leads" create="false" delete="false">
+                                        <field name="name"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Response">
+                                <field name="response"/>
+                            </page>
+                            <page string="Error Description" invisible="state != 'error'">
+                                <field name="error_description"/>
+                            </page>
+                            <page string="Duplicate Leads">
+                                <field name="duplicate_lead_ids">
+                                    <list string="Duplicate Leads" create="false" delete="false">
+                                        <field name="name"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="crm_indiamart_history_search" model="ir.ui.view">
+            <field name="name">crm.indiamart.history.search</field>
+            <field name="model">crm.indiamart.history</field>
+            <field name="arch" type="xml">
+                <search string="Search IndiaMart History">
+                    <field name="company_id"/>
+                    <field name="state"/>
+                    <separator/>
+                    <group>
+                        <filter name="group_company" string="Company" domain="[]" context="{'group_by': 'company_id'}"/>
+                        <filter name="group_state" string="Status" domain="[]" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="crm_indiamart_history_action" model="ir.actions.act_window">
+            <field name="name">Lead IndiaMart History</field>
+            <field name="res_model">crm.indiamart.history</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="crm_indiamart_history_search"/>
+            <field name="view_id" ref="crm_indiamart_history_list"/>
+        </record>
+
+        <menuitem id="lead_indiamart_history_config"
+                  name="Lead IndiaMart History"
+                  parent="crm.crm_menu_config"
+                  action="crm_indiamart_history_action"
+                  sequence="5"/>
+
+    </data>
+</odoo>

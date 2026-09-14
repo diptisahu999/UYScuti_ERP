@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- QWeb PDF Report Registration -->
+    <record id="action_report_solar_gm_proposal" model="ir.actions.report">
+        <field name="name">Customer Proposal Report</field>
+        <field name="model">solar.gm.proposal</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">uyscuti_ground_mounted.report_solar_gm_proposal_template</field>
+        <field name="report_file">uyscuti_ground_mounted.report_solar_gm_proposal_template</field>
+        <field name="binding_model_id" ref="model_solar_gm_proposal"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Custom QWeb PDF Template -->
+    <template id="report_solar_gm_proposal_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <!-- Page custom CSS styling -->
+                    <style>
+                        .gm-title {
+                            color: #1a365d;
+                            font-size: 24px;
+                            font-weight: bold;
+                            border-bottom: 2px solid #2b6cb0;
+                            padding-bottom: 5px;
+                            margin-bottom: 20px;
+                        }
+                        .gm-section-title {
+                            color: #2b6cb0;
+                            font-size: 16px;
+                            font-weight: bold;
+                            margin-top: 25px;
+                            margin-bottom: 10px;
+                            background-color: #f7fafc;
+                            padding: 6px;
+                            border-left: 4px solid #3182ce;
+                        }
+                        .table-gm {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-bottom: 15px;
+                            font-size: 11px;
+                        }
+                        .table-gm th {
+                            background-color: #2b6cb0;
+                            color: #ffffff;
+                            text-align: left;
+                            padding: 6px;
+                            border: 1px solid #cbd5e0;
+                        }
+                        .table-gm td {
+                            padding: 6px;
+                            border: 1px solid #cbd5e0;
+                        }
+                        .table-gm tr:nth-child(even) {
+                            background-color: #f7fafc;
+                        }
+                        .gm-field-label {
+                            font-weight: bold;
+                            color: #4a5568;
+                            width: 60%;
+                        }
+                        .gm-field-value {
+                            text-align: right;
+                            font-weight: bold;
+                            color: #2d3748;
+                        }
+                        .gm-highlight-yellow {
+                            background-color: #fffaf0 !important;
+                            border: 1px solid #fbd38d !important;
+                        }
+                        .gm-text-success {
+                            color: #38a169 !important;
+                        }
+                        .gm-text-danger {
+                            color: #e53e3e !important;
+                        }
+                    </style>
+
+                    <div class="page">
+                        <!-- Header Section -->
+                        <div class="row">
+                            <div class="col-8">
+                                <h1 class="gm-title">Uyscuti Ground Mounted Solar Customer Proposal</h1>
+                            </div>
+                            <div class="col-4 text-right">
+                                <strong>Proposal Ref:</strong> <span t-field="o.name"/><br/>
+                                <strong>Date:</strong> <span t-esc="datetime.date.today().strftime('%d-%m-%Y')"/>
+                            </div>
+                        </div>
+
+                        <!-- Customer Details Block -->
+                        <div class="row my-4">
+                            <div class="col-6">
+                                <strong>Customer Name:</strong> <span t-field="o.customer_name"/><br/>
+                                <strong>Customer Mobile:</strong> <span t-field="o.customer_mobile"/><br/>
+                                <strong>Assigned Lead:</strong> <span t-field="o.lead_id.name"/><br/>
+                            </div>
+                            <div class="col-6 text-right">
+                                <strong>Type of Project:</strong> <span t-field="o.project_type"/><br/>
+                                <strong>DISCOM Drawl:</strong> <span t-field="o.discom_drawl_id.name"/><br/>
+                                <strong>DISCOM Injection:</strong> <span t-field="o.discom_injection_id.name"/><br/>
+                            </div>
+                        </div>
+
+                        <!-- Row 1: Left / Right Tables -->
+                        <div class="row">
+                            <!-- Left: Sizing particulars -->
+                            <div class="col-6">
+                                <div class="gm-section-title">1. Sizing &amp; Requirements</div>
+                                <table class="table-gm">
+                                    <tbody>
+                                        <tr>
+                                            <td class="gm-field-label">Type of Consumer</td>
+                                            <td class="gm-field-value"><span t-field="o.consumer_type"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Power Boundary</td>
+                                            <td class="gm-field-value"><span t-field="o.power_boundary"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Electricity Duty Status</td>
+                                            <td class="gm-field-value"><span t-field="o.duty_status"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label gm-highlight-yellow">Contract Demand (kW)</td>
+                                            <td class="gm-field-value gm-highlight-yellow"><span t-field="o.contract_demand"/> kW</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label gm-highlight-yellow">Existing Solar (kW)</td>
+                                            <td class="gm-field-value gm-highlight-yellow"><span t-field="o.existing_solar_capacity"/> kW</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label gm-highlight-yellow">Monthly Usage (Units)</td>
+                                            <td class="gm-field-value gm-highlight-yellow"><span t-field="o.monthly_usage" t-options="{'widget': 'float', 'precision': 0}"/> kWh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label gm-highlight-yellow">Monthly Bill (INR)</td>
+                                            <td class="gm-field-value gm-highlight-yellow">₹ <span t-esc="o.monthly_bill"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Monthly Daytime Units</td>
+                                            <td class="gm-field-value"><span t-esc="o.monthly_req_units_daytime"/> kWh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Total Losses Compensation</td>
+                                            <td class="gm-field-value"><span t-field="o.losses_compensation_pct" t-options="{'widget': 'float', 'precision': 2}"/> %</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Required Solar Generation</td>
+                                            <td class="gm-field-value"><span t-field="o.req_units_from_solar" t-options="{'widget': 'float', 'precision': 0}"/> kWh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Suggested Capacity (DC)</td>
+                                            <td class="gm-field-value"><span t-field="o.suggested_capacity_dc" t-options="{'widget': 'float', 'precision': 2}"/> kW</td>
+                                        </tr>
+                                        <tr class="gm-highlight-yellow">
+                                            <td class="gm-field-label font-weight-bold">Actual Sized Capacity (DC)</td>
+                                            <td class="gm-field-value font-weight-bold"><span t-field="o.actual_capacity_dc" t-options="{'widget': 'float', 'precision': 2}"/> kW</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Right: Daily losses & Charges -->
+                            <div class="col-6">
+                                <div class="gm-section-title">2. Grid Loss &amp; Tariff Charges</div>
+                                <table class="table-gm">
+                                    <thead>
+                                        <tr>
+                                            <th>Particulars</th>
+                                            <th class="text-right">Daily kWh</th>
+                                            <th class="text-right">Loss (%)</th>
+                                            <th class="text-right">Charges (Rs)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Generation Point (DC MW: <span t-field="o.capacity_mw"/>)</td>
+                                            <td class="text-right"><span t-esc="o.daily_gen_point"/></td>
+                                            <td class="text-right">-</td>
+                                            <td class="text-right">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Wheeling Losses</td>
+                                            <td class="text-right">-</td>
+                                            <td class="text-right"><span t-field="o.wheeling_loss_pct"/>%</td>
+                                            <td class="text-right">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Wheeling Charges</td>
+                                            <td class="text-right"><span t-field="o.wheeling_charge_units" t-options="{'widget': 'float', 'precision': 0}"/></td>
+                                            <td class="text-right">-</td>
+                                            <td class="text-right">₹ <span t-field="o.wheeling_charge_rs" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Transmission Losses</td>
+                                            <td class="text-right">-</td>
+                                            <td class="text-right"><span t-field="o.trans_loss_pct"/>%</td>
+                                            <td class="text-right">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Scheduling Charges</td>
+                                            <td class="text-right">-</td>
+                                            <td class="text-right">-</td>
+                                            <td class="text-right">₹ <span t-field="o.scheduling_charge_rs" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Transmission Charges</td>
+                                            <td class="text-right"><span t-field="o.trans_charge_units" t-options="{'widget': 'float', 'precision': 0}"/></td>
+                                            <td class="text-right">-</td>
+                                            <td class="text-right">₹ <span t-field="o.trans_charge_rs" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sec. Wheeling Losses</td>
+                                            <td class="text-right">-</td>
+                                            <td class="text-right"><span t-field="o.sec_wheeling_loss_pct"/>%</td>
+                                            <td class="text-right">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sec. Wheeling Charges</td>
+                                            <td class="text-right"><span t-field="o.sec_wheeling_charge_units" t-options="{'widget': 'float', 'precision': 0}"/></td>
+                                            <td class="text-right">-</td>
+                                            <td class="text-right">₹ <span t-field="o.sec_wheeling_charge_rs" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Banking Charges</td>
+                                            <td class="text-right"><span t-field="o.banking_charge_units" t-options="{'widget': 'float', 'precision': 0}"/></td>
+                                            <td class="text-right">-</td>
+                                            <td class="text-right">₹ <span t-field="o.banking_charge_rs" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                        </tr>
+                                        <tr style="background-color: #edf2f7; font-weight: bold;">
+                                            <td>Net Losses (%)</td>
+                                            <td class="text-right">-</td>
+                                            <td class="text-right gm-text-danger"><span t-field="o.net_losses_pct" t-options="{'widget': 'float', 'precision': 2}"/>%</td>
+                                            <td class="text-right gm-text-success">₹ <span t-field="o.total_grid_charges_rs" t-options="{'widget': 'float', 'precision': 2}"/> /day</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Fixed charges & block realization -->
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="gm-section-title">3. Contract Demand Fixed Costs</div>
+                                <table class="table-gm">
+                                    <tbody>
+                                        <tr>
+                                            <td class="gm-field-label">1st 500 kVA Block</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.fixed_charge_1"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">2nd 500 kVA Block</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.fixed_charge_2"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Above 1000 kVA Block</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.fixed_charge_3"/></td>
+                                        </tr>
+                                        <tr style="font-weight: bold; background-color: #edf2f7;">
+                                            <td>Total Monthly Fixed Charge</td>
+                                            <td class="text-right">₹ <span t-field="o.fixed_charge_total"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <div class="gm-section-title">4. Realized Tariff / Cost Matrix</div>
+                                <table class="table-gm">
+                                    <tbody>
+                                        <tr>
+                                            <td class="gm-field-label">Cost per Unit (incl. Fixed Charge)</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.per_unit_cost_incl_fc" t-options="{'widget': 'float', 'precision': 2}"/> / kWh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Cost per Unit (excl. Fixed Charge)</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.per_unit_cost_excl_fc" t-options="{'widget': 'float', 'precision': 2}"/> / kWh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Cost per Unit of Wheeling/Losses</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.per_unit_cost_wheeling" t-options="{'widget': 'float', 'precision': 2}"/> / kWh</td>
+                                        </tr>
+                                        <tr style="font-weight: bold; background-color: #edf2f7;">
+                                            <td class="gm-text-success">Income Realization Rate</td>
+                                            <td class="text-right gm-text-success">₹ <span t-field="o.income_solar_gen" t-options="{'widget': 'float', 'precision': 2}"/> / kWh</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Capital Budget (CAPEX) & OPEX / Finance -->
+                        <div class="row" style="page-break-before: always;">
+                            <div class="col-6">
+                                <div class="gm-section-title">5. Capital Expenditure (CAPEX)</div>
+                                <table class="table-gm">
+                                    <tbody>
+                                        <tr>
+                                            <td class="gm-field-label">Plant Capacity</td>
+                                            <td class="gm-field-value"><span t-field="o.capacity_mw"/> MW</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Land Requirement</td>
+                                            <td class="gm-field-value"><span t-field="o.land_req_acre_per_mw"/> Acres/MW</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Substation Distance</td>
+                                            <td class="gm-field-value"><span t-field="o.ss_distance_km"/> KM</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Solar PV Power Plant Cost</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.solar_plant_cost_lakh" t-options="{'widget': 'float', 'precision': 2}"/> Lakh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Total Land Cost</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.total_land_cost_lakh" t-options="{'widget': 'float', 'precision': 2}"/> Lakh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Total Substation Line Cost</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.total_line_cost_lakh" t-options="{'widget': 'float', 'precision': 2}"/> Lakh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Development &amp; Misc Cost</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.other_misc_expenses_lakh" t-options="{'widget': 'float', 'precision': 2}"/> Lakh</td>
+                                        </tr>
+                                        <tr style="font-weight: bold; background-color: #2b6cb0; color: #ffffff;">
+                                            <td style="color: #ffffff;">TOTAL PROJECT CAPITAL BUDGET</td>
+                                            <td class="text-right" style="color: #ffffff;">₹ <span t-field="o.total_cost_lakh" t-options="{'widget': 'float', 'precision': 2}"/> Lakh</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="gm-section-title">6. OPEX &amp; Financing (Loan Parameters)</div>
+                                <table class="table-gm">
+                                    <tbody>
+                                        <tr>
+                                            <td class="gm-field-label">O&amp;M Budget (Year 1)</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.om_cost_yr1" t-options="{'widget': 'float', 'precision': 2}"/> Lakh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Land Lease Budget (Year 1)</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.land_lease_cost_yr1" t-options="{'widget': 'float', 'precision': 2}"/> Lakh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Debt Funding (80%)</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.debt_amount_lakh" t-options="{'widget': 'float', 'precision': 2}"/> Lakh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Equity Funding (20%)</td>
+                                            <td class="gm-field-value">₹ <span t-field="o.equity_amount_lakh" t-options="{'widget': 'float', 'precision': 2}"/> Lakh</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Loan Interest Rate</td>
+                                            <td class="gm-field-value"><span t-field="o.interest_rate_pct"/> %</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="gm-field-label">Tenure Duration</td>
+                                            <td class="gm-field-value"><span t-field="o.tenure_years"/> Years</td>
+                                        </tr>
+                                        <tr style="font-weight: bold; background-color: #edf2f7;">
+                                            <td>Annual Loan Repayment (EMI)</td>
+                                            <td class="text-right">₹ <span t-field="o.yearly_emi_lakh" t-options="{'widget': 'float', 'precision': 2}"/> Lakh</td>
+                                        </tr>
+                                        <tr style="font-weight: bold; background-color: #edf2f7;">
+                                            <td>Total Finance Interest Paid</td>
+                                            <td class="text-right gm-text-danger">₹ <span t-field="o.total_interest_paid_lakh" t-options="{'widget': 'float', 'precision': 2}"/> Lakh</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Row 3: 25-Year Matrix table (Summary) -->
+                        <div style="page-break-before: always;">
+                            <div class="gm-section-title">7. 25-Year Profitability Forecast Matrix</div>
+                            <table class="table-gm" style="font-size: 8.5px;">
+                                <thead>
+                                    <tr>
+                                        <th>Yr</th>
+                                        <th class="text-right">Recd. Units (kWh)</th>
+                                        <th class="text-right">Tariff Rate</th>
+                                        <th class="text-right">Revenue (L)</th>
+                                        <th class="text-right">Grid Exp (L)</th>
+                                        <th class="text-right">O&amp;M Exp (L)</th>
+                                        <th class="text-right">Lease (L)</th>
+                                        <th class="text-right">EMI (L)</th>
+                                        <th class="text-right">Net Income (L)</th>
+                                        <th class="text-right">GST Cred (L)</th>
+                                        <th class="text-right">Cumulative (L)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.projection_line_ids" t-as="l">
+                                        <tr>
+                                            <td><span t-field="l.year"/></td>
+                                            <td class="text-right"><span t-field="l.received_units" t-options="{'widget': 'float', 'precision': 0}"/></td>
+                                            <td class="text-right">₹ <span t-field="l.rate_kwh" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                            <td class="text-right"><span t-field="l.yearly_revenue" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                            <td class="text-right"><span t-field="l.grid_expenses" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                            <td class="text-right"><span t-field="l.om_expenses" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                            <td class="text-right"><span t-field="l.land_lease" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                            <td class="text-right"><span t-field="l.emi" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                            <td class="text-right" t-att-class="'gm-text-danger' if l.net_income &lt; 0 else 'gm-text-success'"><span t-field="l.net_income" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                            <td class="text-right"><span t-field="l.gst_input_credit" t-options="{'widget': 'float', 'precision': 2}"/></td>
+                                            <td class="text-right gm-text-success" style="font-weight: bold;"><span t-field="l.cumulative_income" t-options="{'widget': 'float', 'precision': 2}"/> L</td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

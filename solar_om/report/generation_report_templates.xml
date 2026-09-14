@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Monthly Generation Report Action -->
+    <record id="action_report_solar_monthly_generation" model="ir.actions.report">
+        <field name="name">Monthly Power Generation Report</field>
+        <field name="model">solar.monthly.generation.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">solar_om.report_solar_monthly_generation_template</field>
+        <field name="report_file">solar_om.report_solar_monthly_generation_template</field>
+        <field name="print_report_name">'Monthly_Generation_Report_%s' % (time.strftime('%Y-%m'))</field>
+    </record>
+
+    <!-- Monthly Generation Report HTML/PDF Template -->
+    <template id="report_solar_monthly_generation_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page" style="font-family: 'Helvetica', 'Arial', sans-serif; font-size: 13px;">
+                    <!-- Company/Header Title matching the spreadsheet layout -->
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold m-0" style="color: #2b5876;"><t t-esc="plant.name"/></h2>
+                        <h4 class="text-muted m-0">DAILY GENERATION STATEMENT - <t t-esc="month_name"/> <t t-esc="year"/></h4>
+                    </div>
+                    <hr style="border: 1px solid #2b5876;"/>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <strong>Plant Name:</strong> <span t-field="plant.name"/><br/>
+                            <strong>Discom Utility Name:</strong> <span t-esc="plant.discom_name or 'N/A'"/><br/>
+                        </div>
+                        <div class="col-6 text-end">
+                            <strong>Configured Capacity:</strong> <span t-esc="plant.capacity / 1000.0"/> MW<br/>
+                            <strong>Rate / Unit:</strong> <span t-esc="plant.price_per_unit"/> Rs.<br/>
+                        </div>
+                    </div>
+
+                    <!-- Main Generation Table -->
+                    <table class="table table-bordered table-sm table-striped mt-3" style="border: 1px solid #dee2e6;">
+                        <thead style="background-color: #2b5876; color: white;">
+                            <tr class="text-center">
+                                <th style="width: 8%;">Sr. No.</th>
+                                <th style="width: 15%;">Date</th>
+                                <th style="width: 15%;">Capacity (MW)</th>
+                                <th style="width: 15%;">Discom Name</th>
+                                <th style="width: 17%;">Energy KWH/ Day</th>
+                                <th style="width: 13%;">Price /Unit</th>
+                                <th style="width: 17%;">Revenue (Rs.)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Iterate over sorted records passed by parser -->
+                            <t t-set="sr_no" t-value="1"/>
+                            <t t-foreach="records" t-as="record">
+                                <tr>
+                                    <td class="text-center"><t t-esc="sr_no"/></td>
+                                    <td class="text-center"><span t-field="record.date" t-options='{"format": "dd-MM-yyyy"}'/></td>
+                                    <td class="text-center"><span t-field="record.capacity_str"/></td>
+                                    <td class="text-center"><span t-field="record.discom_name"/></td>
+                                    <td class="text-end"><span t-esc="'{0:,.2f}'.format(record.energy_kwh)"/></td>
+                                    <td class="text-center"><span t-esc="record.price_per_unit"/> Rs.</td>
+                                    <td class="text-end"><span t-esc="'{0:,.2f}'.format(record.revenue)"/></td>
+                                </tr>
+                                <t t-set="sr_no" t-value="sr_no + 1"/>
+                            </t>
+
+                            <!-- Totals Row -->
+                            <tr style="background-color: #f1f3f5; font-weight: bold; border-top: 2px solid #2b5876;">
+                                <td colspan="4" class="text-center">TOTAL SUMMARY</td>
+                                <td class="text-end text-primary"><t t-esc="'{0:,.2f}'.format(total_energy)"/></td>
+                                <td class="text-center">-</td>
+                                <td class="text-end text-success"><t t-esc="'{0:,.2f}'.format(total_revenue)"/> Rs.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Signature blocks -->
+                    <div class="row mt-5" style="margin-top: 80px !important;">
+                        <div class="col-6">
+                            <p class="mb-4">Prepared By:</p>
+                            <div style="border-top: 1px solid #dee2e6; width: 60%;"/>
+                            <p class="text-muted small">Field Engineer / Site Incharge</p>
+                        </div>
+                        <div class="col-6 text-end">
+                            <p class="mb-4">Approved By:</p>
+                            <div class="d-inline-block" style="border-top: 1px solid #dee2e6; width: 60%;"/>
+                            <p class="text-muted small">O&amp;M Operations Manager</p>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

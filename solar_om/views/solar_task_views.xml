@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ========================================== -->
+    <!-- PREVENTIVE MAINTENANCE VIEWS (solar.maintenance) -->
+    <!-- ========================================== -->
+
+    <!-- List View -->
+    <record id="view_solar_maintenance_list" model="ir.ui.view">
+        <field name="name">solar.maintenance.list</field>
+        <field name="model">solar.maintenance</field>
+        <field name="arch" type="xml">
+            <list string="Preventive Maintenance Tasks">
+                <field name="name"/>
+                <field name="plant_id"/>
+                <field name="equipment_id"/>
+                <field name="maintenance_type_id"/>
+                <field name="user_id" string="Engineer"/>
+                <field name="date_due"/>
+                <field name="actual_hours" widget="float_time"/>
+                <field name="state" widget="badge" decoration-info="state in ('assigned', 'in_progress')" decoration-success="state == 'completed'" decoration-warning="state == 'draft'" decoration-danger="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_solar_maintenance_form" model="ir.ui.view">
+        <field name="name">solar.maintenance.form</field>
+        <field name="model">solar.maintenance</field>
+        <field name="arch" type="xml">
+            <form string="Preventive Maintenance Task">
+                <header>
+                    <button name="action_start" string="Start Task" type="object" class="oe_highlight" invisible="state != 'assigned'"/>
+                    <button name="action_pause" string="Pause" type="object" invisible="state != 'in_progress' or is_paused"/>
+                    <button name="action_resume" string="Resume" type="object" class="oe_highlight" invisible="state != 'in_progress' or not is_paused"/>
+                    <button name="action_complete" string="Complete" type="object" class="oe_highlight" invisible="state != 'in_progress'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,assigned,in_progress,completed" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Task Details">
+                            <field name="plant_id"/>
+                            <field name="equipment_id" options="{'no_create': True}"/>
+                            <field name="maintenance_type_id"/>
+                            <field name="priority" widget="priority"/>
+                        </group>
+                        <group string="Scheduling &amp; Progress">
+                            <field name="user_id"/>
+                            <field name="date_due"/>
+                            <field name="checklist_template_id"/>
+                            <field name="estimated_hours" widget="float_time"/>
+                            <field name="actual_hours" widget="float_time" readonly="1"/>
+                            <field name="is_paused" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Checklist" name="checklist">
+                            <field name="checklist_line_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="status" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="remarks"/>
+                                    <field name="photo" widget="image" options="{'size': [50, 50]}"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Execution &amp; Signature" name="execution">
+                            <group>
+                                <field name="signature" widget="signature"/>
+                                <field name="remarks" placeholder="General completion notes..."/>
+                                <field name="date_completed" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_solar_maintenance_search" model="ir.ui.view">
+        <field name="name">solar.maintenance.search</field>
+        <field name="model">solar.maintenance</field>
+        <field name="arch" type="xml">
+            <search string="Search Maintenance Tasks">
+                <field name="name"/>
+                <field name="plant_id"/>
+                <field name="user_id"/>
+                <separator/>
+                <filter string="Overdue" name="overdue" domain="[('date_due', '&lt;', context_today().strftime('%Y-%m-%d')), ('state', '!=', 'completed')]"/>
+                <filter string="My Tasks" name="my_tasks" domain="[('user_id', '=', uid)]"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Assigned" name="assigned" domain="[('state', '=', 'assigned')]"/>
+                <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <group>
+                    <filter string="Solar Plant" name="group_plant" context="{'group_by': 'plant_id'}"/>
+                    <filter string="Engineer" name="group_engineer" context="{'group_by': 'user_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_solar_maintenance" model="ir.actions.act_window">
+        <field name="name">Preventive Maintenance</field>
+        <field name="res_model">solar.maintenance</field>
+        <field name="view_mode">list,form,search</field>
+    </record>
+
+
+    <!-- ========================================== -->
+    <!-- BREAKDOWN VIEWS (solar.breakdown)          -->
+    <!-- ========================================== -->
+
+    <!-- List View -->
+    <record id="view_solar_breakdown_list" model="ir.ui.view">
+        <field name="name">solar.breakdown.list</field>
+        <field name="model">solar.breakdown</field>
+        <field name="arch" type="xml">
+            <list string="Breakdown Tickets">
+                <field name="name"/>
+                <field name="plant_id"/>
+                <field name="equipment_id"/>
+                <field name="issue_type_id"/>
+                <field name="user_id" string="Engineer"/>
+                <field name="sla_deadline"/>
+                <field name="downtime" sum="Total Downtime"/>
+                <field name="state" widget="badge" decoration-danger="state == 'draft'" decoration-warning="state in ('assigned', 'in_progress')" decoration-success="state in ('resolved', 'closed')"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_solar_breakdown_form" model="ir.ui.view">
+        <field name="name">solar.breakdown.form</field>
+        <field name="model">solar.breakdown</field>
+        <field name="arch" type="xml">
+            <form string="Breakdown Ticket">
+                <header>
+                    <button name="action_start" string="Start Work" type="object" class="oe_highlight" invisible="state != 'assigned'"/>
+                    <button name="action_pause" string="Pause" type="object" invisible="state != 'in_progress' or is_paused"/>
+                    <button name="action_resume" string="Resume" type="object" class="oe_highlight" invisible="state != 'in_progress' or not is_paused"/>
+                    <button name="action_resolve" string="Resolve Ticket" type="object" class="oe_highlight" invisible="state != 'in_progress'"/>
+                    <button name="action_close" string="Close Ticket" type="object" class="oe_highlight" groups="solar_om.group_solar_om_manager,solar_om.group_solar_om_admin" invisible="state != 'resolved'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,assigned,in_progress,resolved,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Ticket Information">
+                            <field name="plant_id"/>
+                            <field name="equipment_id" options="{'no_create': True}"/>
+                            <field name="issue_type_id"/>
+                            <field name="sla_deadline"/>
+                        </group>
+                        <group string="Assignment &amp; Diagnostics">
+                            <field name="user_id"/>
+                            <field name="priority" widget="priority"/>
+                            <field name="failure_reason_id"/>
+                            <field name="escalated_to_id"/>
+                            <field name="downtime"/>
+                            <field name="is_paused" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Diagnostics &amp; Resolution" name="resolution">
+                            <group>
+                                <field name="description" placeholder="Describe the issue..."/>
+                                <field name="resolution" placeholder="Actions taken to resolve..."/>
+                                <field name="corrective_action" placeholder="Long-term corrective action..."/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_solar_breakdown_search" model="ir.ui.view">
+        <field name="name">solar.breakdown.search</field>
+        <field name="model">solar.breakdown</field>
+        <field name="arch" type="xml">
+            <search string="Search Breakdown Tickets">
+                <field name="name"/>
+                <field name="plant_id"/>
+                <field name="user_id"/>
+                <separator/>
+                <filter string="My Tickets" name="my_tickets" domain="[('user_id', '=', uid)]"/>
+                <filter string="Open Tickets" name="open_tickets" domain="[('state', 'in', ('draft', 'assigned', 'in_progress'))]"/>
+                <filter string="High/Critical" name="high_priority" domain="[('priority', 'in', ('2', '3'))]"/>
+                <filter string="Overdue SLA" name="overdue_sla" domain="[('sla_deadline', '&lt;', context_today().strftime('%Y-%m-%d %H:%M:%S')), ('state', 'not in', ('resolved', 'closed'))]"/>
+                <group>
+                    <filter string="Solar Plant" name="group_plant" context="{'group_by': 'plant_id'}"/>
+                    <filter string="Issue Category" name="group_issue" context="{'group_by': 'issue_type_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_solar_breakdown" model="ir.actions.act_window">
+        <field name="name">Breakdown Tickets</field>
+        <field name="res_model">solar.breakdown</field>
+        <field name="view_mode">list,form,search</field>
+    </record>
+
+
+    <!-- ========================================== -->
+    <!-- CLEANING MANAGEMENT VIEWS (solar.cleaning) -->
+    <!-- ========================================== -->
+
+    <!-- List View -->
+    <record id="view_solar_cleaning_list" model="ir.ui.view">
+        <field name="name">solar.cleaning.list</field>
+        <field name="model">solar.cleaning</field>
+        <field name="arch" type="xml">
+            <list string="Cleaning Tasks">
+                <field name="name"/>
+                <field name="plant_id"/>
+                <field name="cleaning_type_id"/>
+                <field name="frequency"/>
+                <field name="user_id" string="Engineer"/>
+                <field name="completion_time"/>
+                <field name="water_consumption" sum="Total Water Consumption"/>
+                <field name="state" widget="badge" decoration-success="state == 'completed'" decoration-warning="state == 'draft'" decoration-danger="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_solar_cleaning_form" model="ir.ui.view">
+        <field name="name">solar.cleaning.form</field>
+        <field name="model">solar.cleaning</field>
+        <field name="arch" type="xml">
+            <form string="Cleaning Task">
+                <header>
+                    <button name="action_start" string="Start Cleaning" type="object" class="oe_highlight" invisible="state != 'assigned'"/>
+                    <button name="action_pause" string="Pause" type="object" invisible="state != 'in_progress' or is_paused"/>
+                    <button name="action_resume" string="Resume" type="object" class="oe_highlight" invisible="state != 'in_progress' or not is_paused"/>
+                    <button name="action_complete" string="Complete" type="object" class="oe_highlight" invisible="state != 'in_progress'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,assigned,in_progress,completed" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Schedule &amp; Type">
+                            <field name="plant_id"/>
+                            <field name="cleaning_type_id"/>
+                            <field name="frequency"/>
+                            <field name="checklist_template_id"/>
+                        </group>
+                        <group string="Execution &amp; Geo-location">
+                            <field name="user_id"/>
+                            <field name="water_consumption"/>
+                            <field name="completion_time" readonly="1"/>
+                            <field name="latitude" readonly="1"/>
+                            <field name="longitude" readonly="1"/>
+                            <field name="is_paused" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Checklist" name="checklist">
+                            <field name="checklist_line_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="status" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="remarks"/>
+                                    <field name="photo" widget="image" options="{'size': [50, 50]}"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Photos" name="photos">
+                            <group>
+                                <field name="before_image" widget="image"/>
+                                <field name="after_image" widget="image"/>
+                            </group>
+                        </page>
+                        <page string="Remarks" name="remarks">
+                            <field name="remarks" placeholder="Type remarks here..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_solar_cleaning_search" model="ir.ui.view">
+        <field name="name">solar.cleaning.search</field>
+        <field name="model">solar.cleaning</field>
+        <field name="arch" type="xml">
+            <search string="Search Cleaning Tasks">
+                <field name="name"/>
+                <field name="plant_id"/>
+                <field name="user_id"/>
+                <separator/>
+                <filter string="My Tasks" name="my_tasks" domain="[('user_id', '=', uid)]"/>
+                <filter string="Weekly" name="freq_weekly" domain="[('frequency', '=', 'weekly')]"/>
+                <filter string="Monthly" name="freq_monthly" domain="[('frequency', '=', 'monthly')]"/>
+                <filter string="Pending" name="pending" domain="[('state', 'in', ('draft', 'assigned', 'in_progress'))]"/>
+                <group>
+                    <filter string="Solar Plant" name="group_plant" context="{'group_by': 'plant_id'}"/>
+                    <filter string="Frequency" name="group_frequency" context="{'group_by': 'frequency'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_solar_cleaning" model="ir.actions.act_window">
+        <field name="name">Cleaning Tasks</field>
+        <field name="res_model">solar.cleaning</field>
+        <field name="view_mode">list,form,search</field>
+    </record>
+
+
+    <!-- ========================================== -->
+    <!-- GENERAL O&M TASKS VIEWS (solar.task)       -->
+    <!-- ========================================== -->
+
+    <!-- List View -->
+    <record id="view_solar_task_list" model="ir.ui.view">
+        <field name="name">solar.task.list</field>
+        <field name="model">solar.task</field>
+        <field name="arch" type="xml">
+            <list string="General O&amp;M Tasks">
+                <field name="name"/>
+                <field name="plant_id"/>
+                <field name="user_id"/>
+                <field name="time_spend" string="Spent Hours" widget="float_time"/>
+                <field name="state" widget="badge" decoration-success="state in ('completed', 'closed')" decoration-info="state in ('accepted', 'in_progress')" decoration-warning="state == 'assigned'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_solar_task_form" model="ir.ui.view">
+        <field name="name">solar.task.form</field>
+        <field name="model">solar.task</field>
+        <field name="arch" type="xml">
+            <form string="General O&amp;M Task">
+                <header>
+                    <button name="action_assign" string="Assign" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_accept" string="Accept Task" type="object" class="oe_highlight" invisible="state != 'assigned'"/>
+                    <button name="action_start" string="Start Work" type="object" class="oe_highlight" invisible="state not in ('accepted', 'assigned')"/>
+                    <button name="action_pause" string="Pause" type="object" invisible="state != 'in_progress' or is_paused"/>
+                    <button name="action_resume" string="Resume" type="object" class="oe_highlight" invisible="state != 'in_progress' or not is_paused"/>
+                    <button name="action_complete" string="Submit for Approval" type="object" class="oe_highlight" invisible="state != 'in_progress'"/>
+                    <button name="action_approve" string="Approve" type="object" class="oe_highlight" groups="solar_om.group_solar_om_manager,solar_om.group_solar_om_admin" invisible="state != 'waiting_approval'"/>
+                    <button name="action_close" string="Close Task" type="object" class="oe_highlight" groups="solar_om.group_solar_om_manager,solar_om.group_solar_om_admin" invisible="state != 'completed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,assigned,accepted,in_progress,waiting_approval,completed,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Task Details">
+                            <field name="plant_id"/>
+                            <field name="user_id"/>
+                            <field name="checklist_template_id"/>
+                        </group>
+                        <group string="Tracking &amp; Time">
+                            <field name="time_spend" widget="float_time" readonly="1"/>
+                            <field name="latitude" readonly="1"/>
+                            <field name="longitude" readonly="1"/>
+                            <field name="is_paused" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Checklist" name="checklist">
+                            <field name="checklist_line_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="status" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="remarks"/>
+                                    <field name="photo" widget="image" options="{'size': [50, 50]}"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Execution &amp; Close" name="execution">
+                            <group>
+                                <field name="signature" widget="signature"/>
+                                <field name="remarks" placeholder="Type closing remarks here..."/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_solar_task_search" model="ir.ui.view">
+        <field name="name">solar.task.search</field>
+        <field name="model">solar.task</field>
+        <field name="arch" type="xml">
+            <search string="Search General Tasks">
+                <field name="name"/>
+                <field name="plant_id"/>
+                <field name="user_id"/>
+                <separator/>
+                <filter string="My Tasks" name="my_tasks" domain="[('user_id', '=', uid)]"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Assigned" name="assigned" domain="[('state', '=', 'assigned')]"/>
+                <filter string="Accepted" name="accepted" domain="[('state', '=', 'accepted')]"/>
+                <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Waiting Approval" name="waiting" domain="[('state', '=', 'waiting_approval')]"/>
+                <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <filter string="Closed" name="closed" domain="[('state', '=', 'closed')]"/>
+                <group>
+                    <filter string="Solar Plant" name="group_plant" context="{'group_by': 'plant_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_solar_task" model="ir.actions.act_window">
+        <field name="name">General Tasks</field>
+        <field name="res_model">solar.task</field>
+        <field name="view_mode">list,form,search</field>
+    </record>
+
+</odoo>

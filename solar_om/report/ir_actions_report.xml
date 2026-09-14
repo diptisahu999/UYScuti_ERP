@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Plant Report -->
+    <record id="action_report_solar_plant" model="ir.actions.report">
+        <field name="name">Solar Plant Overview</field>
+        <field name="model">solar.plant</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">solar_om.report_solar_plant_template</field>
+        <field name="report_file">solar_om.report_solar_plant_template</field>
+        <field name="print_report_name">'Plant_Overview_%s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_solar_plant"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Maintenance Report -->
+    <record id="action_report_solar_maintenance" model="ir.actions.report">
+        <field name="name">Maintenance Activity Report</field>
+        <field name="model">solar.maintenance</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">solar_om.report_solar_maintenance_template</field>
+        <field name="report_file">solar_om.report_solar_maintenance_template</field>
+        <field name="print_report_name">'Maintenance_Report_%s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_solar_maintenance"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Breakdown Report -->
+    <record id="action_report_solar_breakdown" model="ir.actions.report">
+        <field name="name">Breakdown Ticket Report</field>
+        <field name="model">solar.breakdown</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">solar_om.report_solar_breakdown_template</field>
+        <field name="report_file">solar_om.report_solar_breakdown_template</field>
+        <field name="print_report_name">'Breakdown_Report_%s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_solar_breakdown"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Cleaning Report -->
+    <record id="action_report_solar_cleaning" model="ir.actions.report">
+        <field name="name">Cleaning Task Report</field>
+        <field name="model">solar.cleaning</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">solar_om.report_solar_cleaning_template</field>
+        <field name="report_file">solar_om.report_solar_cleaning_template</field>
+        <field name="print_report_name">'Cleaning_Report_%s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_solar_cleaning"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

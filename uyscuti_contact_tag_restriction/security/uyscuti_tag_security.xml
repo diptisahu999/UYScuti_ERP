@@ -1,0 +1,6 @@
+<odoo>
+    <record id="group_contact_tag_create" model="res.groups">
+        <field name="name">Create Contact Tags</field>
+
+    </record>
+</odoo>

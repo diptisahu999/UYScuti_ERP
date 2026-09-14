@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_solar_project_form_inherit_gm" model="ir.ui.view">
+        <field name="name">solar.project.form.inherit.gm</field>
+        <field name="model">solar.project</field>
+        <field name="inherit_id" ref="uyscuti_solar_project.view_solar_project_form"/>
+        <field name="arch" type="xml">
+            <!-- Adjust the visibility of the "Move to Next Stage" button -->
+            <xpath expr="//button[@name='action_next_stage']" position="attributes">
+                <attribute name="invisible">state in ('payment_clear', 'gm_qc') or not is_stage_editable</attribute>
+            </xpath>
+
+            <!-- Current Stage Details Tab Pages for Ground Mounted Stages -->
+            <xpath expr="//page[@name='current_stage']" position="inside">
+
+                <!-- GM 2. Project Apply -->
+                <group invisible="state != 'gm_project_apply'">
+                    <group string="2. Project Application Details">
+                        <field name="gm_project_apply_date"/>
+                    </group>
+                </group>
+
+                <!-- GM 3. Discom Application -->
+                <group invisible="state != 'gm_discom_app'">
+                    <group string="3. Discom Application Details">
+                        <field name="gm_discom_app_date"/>
+                    </group>
+                </group>
+
+                <!-- GM 4. Akshay Urja Connectivity -->
+                <group invisible="state != 'gm_akshay_urja'">
+                    <group string="4. Akshay Urja Connectivity Apply">
+                        <field name="gm_akshay_urja_date"/>
+                    </group>
+                </group>
+
+                <!-- GM 5. Document Submit -->
+                <div invisible="state != 'gm_doc_submit'">
+                    <group string="5. Document Submission Info">
+                        <field name="gm_doc_submit_date"/>
+                    </group>
+                    <group string="Documents Checklist">
+                        <group>
+                            <label for="gm_doc_work_completion"/>
+                            <div class="o_row">
+                                <field name="gm_doc_work_completion" filename="gm_doc_work_completion_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_work_completion'}" invisible="not gm_doc_work_completion" class="btn-link p-0"/>
+                                <field name="gm_doc_work_completion_name" invisible="1"/>
+                            </div>
+
+                            <label for="gm_doc_ceig_approval"/>
+                            <div class="o_row">
+                                <field name="gm_doc_ceig_approval" filename="gm_doc_ceig_approval_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_ceig_approval'}" invisible="not gm_doc_ceig_approval" class="btn-link p-0"/>
+                                <field name="gm_doc_ceig_approval_name" invisible="1"/>
+                            </div>
+
+                            <label for="gm_doc_ppa"/>
+                            <div class="o_row">
+                                <field name="gm_doc_ppa" filename="gm_doc_ppa_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_ppa'}" invisible="not gm_doc_ppa" class="btn-link p-0"/>
+                                <field name="gm_doc_ppa_name" invisible="1"/>
+                            </div>
+
+                            <label for="gm_doc_abt_meter_inspection"/>
+                            <div class="o_row">
+                                <field name="gm_doc_abt_meter_inspection" filename="gm_doc_abt_meter_inspection_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_abt_meter_inspection'}" invisible="not gm_doc_abt_meter_inspection" class="btn-link p-0"/>
+                                <field name="gm_doc_abt_meter_inspection_name" invisible="1"/>
+                            </div>
+
+                            <label for="gm_doc_ctpt_inspection"/>
+                            <div class="o_row">
+                                <field name="gm_doc_ctpt_inspection" filename="gm_doc_ctpt_inspection_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_ctpt_inspection'}" invisible="not gm_doc_ctpt_inspection" class="btn-link p-0"/>
+                                <field name="gm_doc_ctpt_inspection_name" invisible="1"/>
+                            </div>
+
+                            <label for="gm_doc_abt_meter_test"/>
+                            <div class="o_row">
+                                <field name="gm_doc_abt_meter_test" filename="gm_doc_abt_meter_test_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_abt_meter_test'}" invisible="not gm_doc_abt_meter_test" class="btn-link p-0"/>
+                                <field name="gm_doc_abt_meter_test_name" invisible="1"/>
+                            </div>
+
+                            <label for="gm_doc_line_sanction"/>
+                            <div class="o_row">
+                                <field name="gm_doc_line_sanction" filename="gm_doc_line_sanction_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_line_sanction'}" invisible="not gm_doc_line_sanction" class="btn-link p-0"/>
+                                <field name="gm_doc_line_sanction_name" invisible="1"/>
+                            </div>
+                        </group>
+                        <group>
+                            <label for="gm_doc_rrecl_registration"/>
+                            <div class="o_row">
+                                <field name="gm_doc_rrecl_registration" filename="gm_doc_rrecl_registration_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_rrecl_registration'}" invisible="not gm_doc_rrecl_registration" class="btn-link p-0"/>
+                                <field name="gm_doc_rrecl_registration_name" invisible="1"/>
+                            </div>
+
+                            <label for="gm_doc_meter_plan_approval"/>
+                            <div class="o_row">
+                                <field name="gm_doc_meter_plan_approval" filename="gm_doc_meter_plan_approval_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_meter_plan_approval'}" invisible="not gm_doc_meter_plan_approval" class="btn-link p-0"/>
+                                <field name="gm_doc_meter_plan_approval_name" invisible="1"/>
+                            </div>
+
+                            <label for="gm_doc_trans_test_report"/>
+                            <div class="o_row">
+                                <field name="gm_doc_trans_test_report" filename="gm_doc_trans_test_report_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_trans_test_report'}" invisible="not gm_doc_trans_test_report" class="btn-link p-0"/>
+                                <field name="gm_doc_trans_test_report_name" invisible="1"/>
+                            </div>
+
+                            <label for="gm_doc_inv_test_report"/>
+                            <div class="o_row">
+                                <field name="gm_doc_inv_test_report" filename="gm_doc_inv_test_report_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_inv_test_report'}" invisible="not gm_doc_inv_test_report" class="btn-link p-0"/>
+                                <field name="gm_doc_inv_test_report_name" invisible="1"/>
+                            </div>
+
+                            <label for="gm_doc_line_material_test"/>
+                            <div class="o_row">
+                                <field name="gm_doc_line_material_test" filename="gm_doc_line_material_test_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_line_material_test'}" invisible="not gm_doc_line_material_test" class="btn-link p-0"/>
+                                <field name="gm_doc_line_material_test_name" invisible="1"/>
+                            </div>
+
+                            <label for="gm_doc_approved_sld"/>
+                            <div class="o_row">
+                                <field name="gm_doc_approved_sld" filename="gm_doc_approved_sld_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_doc_approved_sld'}" invisible="not gm_doc_approved_sld" class="btn-link p-0"/>
+                                <field name="gm_doc_approved_sld_name" invisible="1"/>
+                            </div>
+                        </group>
+                    </group>
+                    <separator string="Stage 5 Photos Checklist (Multiple Photos Uploads)"/>
+                    <field name="gm_doc_photo_ids" nolabel="1">
+                        <list editable="bottom">
+                            <field name="photo" filename="photo_name"/>
+                            <field name="photo_name" column_invisible="True"/>
+                            <field name="photo_type_id"/>
+                            <field name="description"/>
+                        </list>
+                    </field>
+</div>
+ 
+                 <!-- GM 6. Fees Payment -->
+                <group invisible="state != 'gm_fees_pay'">
+                    <group string="6. Fees Payment Details">
+                        <field name="gm_fees_pay_date"/>
+                        <field name="gm_fees_amount"/>
+                        <label for="gm_fees_receipt"/>
+                        <div class="o_row">
+                            <field name="gm_fees_receipt" filename="gm_fees_receipt_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_fees_receipt'}" invisible="not gm_fees_receipt" class="btn-link p-0"/>
+                            <field name="gm_fees_receipt_name" invisible="1"/>
+                        </div>
+                    </group>
+                    <group string="Invoices Checklist">
+                        <label for="gm_invoice_trans"/>
+                        <div class="o_row">
+                            <field name="gm_invoice_trans" filename="gm_invoice_trans_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_invoice_trans'}" invisible="not gm_invoice_trans" class="btn-link p-0"/>
+                            <field name="gm_invoice_trans_name" invisible="1"/>
+                        </div>
+
+                        <label for="gm_invoice_inv"/>
+                        <div class="o_row">
+                            <field name="gm_invoice_inv" filename="gm_invoice_inv_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_invoice_inv'}" invisible="not gm_invoice_inv" class="btn-link p-0"/>
+                            <field name="gm_invoice_inv_name" invisible="1"/>
+                        </div>
+
+                        <label for="gm_invoice_module"/>
+                        <div class="o_row">
+                            <field name="gm_invoice_module" filename="gm_invoice_module_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_invoice_module'}" invisible="not gm_invoice_module" class="btn-link p-0"/>
+                            <field name="gm_invoice_module_name" invisible="1"/>
+                        </div>
+
+                        <label for="gm_invoice_line"/>
+                        <div class="o_row">
+                            <field name="gm_invoice_line" filename="gm_invoice_line_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_invoice_line'}" invisible="not gm_invoice_line" class="btn-link p-0"/>
+                            <field name="gm_invoice_line_name" invisible="1"/>
+                        </div>
+
+                        <label for="gm_invoice_rms"/>
+                        <div class="o_row">
+                            <field name="gm_invoice_rms" filename="gm_invoice_rms_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_invoice_rms'}" invisible="not gm_invoice_rms" class="btn-link p-0"/>
+                            <field name="gm_invoice_rms_name" invisible="1"/>
+                        </div>
+                    </group>
+                </group>
+
+                <!-- GM 7. Approval -->
+                <group invisible="state != 'gm_approval'">
+                    <group string="7. Project Approval Details">
+                        <field name="gm_approval_date"/>
+                        <label for="gm_approval_letter"/>
+                        <div class="o_row">
+                            <field name="gm_approval_letter" filename="gm_approval_letter_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_approval_letter'}" invisible="not gm_approval_letter" class="btn-link p-0"/>
+                            <field name="gm_approval_letter_name" invisible="1"/>
+                        </div>
+                    </group>
+                </group>
+
+                <!-- GM 8. Discom Agreement -->
+                <group invisible="state != 'gm_discom_agreement'">
+                    <group string="8. Discom Agreement Details">
+                        <field name="gm_discom_agreement_date"/>
+                        <label for="gm_discom_agreement_doc"/>
+                        <div class="o_row">
+                            <field name="gm_discom_agreement_doc" filename="gm_discom_agreement_doc_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_discom_agreement_doc'}" invisible="not gm_discom_agreement_doc" class="btn-link p-0"/>
+                            <field name="gm_discom_agreement_doc_name" invisible="1"/>
+                        </div>
+                    </group>
+                </group>
+
+                <!-- GM 9. Land -->
+                <group invisible="state != 'gm_land'">
+                    <group string="9. Land Details">
+                        <field name="gm_land_area_acres"/>
+                        <field name="gm_land_clearance_date"/>
+                        <field name="gm_land_survey_no"/>
+                        <label for="gm_land_document"/>
+                        <div class="o_row">
+                            <field name="gm_land_document" filename="gm_land_document_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_land_document'}" invisible="not gm_land_document" class="btn-link p-0"/>
+                            <field name="gm_land_document_name" invisible="1"/>
+                        </div>
+                    </group>
+                </group>
+
+                <!-- GM 10. Design -->
+                <div invisible="state != 'gm_design'">
+                    <group string="10. Design Details">
+                        <field name="gm_design_date"/>
+                        <field name="gm_design_approved_by"/>
+                        <label for="gm_design_layout_dwg"/>
+                        <div class="o_row">
+                            <field name="gm_design_layout_dwg" filename="gm_design_layout_dwg_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_design_layout_dwg'}" invisible="not gm_design_layout_dwg" class="btn-link p-0"/>
+                            <field name="gm_design_layout_dwg_name" invisible="1"/>
+                        </div>
+                    </group>
+                    <separator string="Design Images Checklist (Multiple Design Images Upload)"/>
+                    <field name="gm_design_image_ids" nolabel="1">
+                        <list editable="bottom">
+                            <field name="image" filename="image_name"/>
+                            <field name="image_name" column_invisible="True"/>
+                            <field name="description"/>
+                        </list>
+                    </field>
+                </div>
+
+                <!-- GM 11. BOM -->
+                <group invisible="state != 'gm_bom'">
+                    <group string="11. Bill of Materials (BOM)">
+                        <field name="gm_bom_date"/>
+                        <field name="gm_bom_cost_est"/>
+                        <label for="gm_bom_sheet"/>
+                        <div class="o_row">
+                            <field name="gm_bom_sheet" filename="gm_bom_sheet_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_bom_sheet'}" invisible="not gm_bom_sheet" class="btn-link p-0"/>
+                            <field name="gm_bom_sheet_name" invisible="1"/>
+                        </div>
+                    </group>
+                </group>
+
+                <!-- GM 12. Vendor Selection -->
+                <group invisible="state != 'gm_vendor_select'">
+                    <group string="12. Vendor Selection &amp; Purchase Order">
+                        <field name="gm_vendor_select_date"/>
+                        <field name="gm_selected_vendor_id"/>
+                        <field name="gm_purchase_order_ref"/>
+                        <field name="gm_po_amount"/>
+                        <label for="gm_po_document"/>
+                        <div class="o_row">
+                            <field name="gm_po_document" filename="gm_po_document_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_po_document'}" invisible="not gm_po_document" class="btn-link p-0"/>
+                            <field name="gm_po_document_name" invisible="1"/>
+                        </div>
+                    </group>
+                </group>
+
+                <!-- GM 13. Store Incharge Manager -->
+                <group invisible="state != 'gm_store_incharge'">
+                    <group string="13. Store Material Inward">
+                        <field name="gm_store_incharge_date"/>
+                        <field name="gm_store_manager"/>
+                        <field name="gm_store_remarks"/>
+                        <label for="gm_inward_delivery_challan"/>
+                        <div class="o_row">
+                            <field name="gm_inward_delivery_challan" filename="gm_inward_delivery_challan_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_inward_delivery_challan'}" invisible="not gm_inward_delivery_challan" class="btn-link p-0"/>
+                            <field name="gm_inward_delivery_challan_name" invisible="1"/>
+                        </div>
+                    </group>
+                </group>
+
+                <!-- GM 14. Authorised Person -->
+                <group invisible="state != 'gm_authorised_person'">
+                    <group string="14. Project Handover &amp; Authorization">
+                        <field name="gm_authorised_person_date"/>
+                        <field name="gm_authorised_person_name"/>
+                        <field name="gm_authorised_person_id"/>
+                        <label for="gm_auth_letter"/>
+                        <div class="o_row">
+                            <field name="gm_auth_letter" filename="gm_auth_letter_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_auth_letter'}" invisible="not gm_auth_letter" class="btn-link p-0"/>
+                            <field name="gm_auth_letter_name" invisible="1"/>
+                        </div>
+                    </group>
+                </group>
+
+                <!-- GM 15. MMS Report (25%) -->
+                <group invisible="state != 'gm_mms_report'">
+                    <group string="15. Civil Pile Work Status (25% Milestone)">
+                        <field name="gm_mms_report_date"/>
+                        <field name="gm_mms_pile_count"/>
+                        <label for="gm_mms_report_file"/>
+                        <div class="o_row">
+                            <field name="gm_mms_report_file" filename="gm_mms_report_file_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_mms_report_file'}" invisible="not gm_mms_report_file" class="btn-link p-0"/>
+                            <field name="gm_mms_report_file_name" invisible="1"/>
+                        </div>
+                    </group>
+                </group>
+
+                <!-- GM 16. Blockwise Reconcile -->
+                <group invisible="state != 'gm_blockwise_reconcile'">
+                    <group string="16. Blockwise Reconciliation">
+                        <field name="gm_reconcile_date"/>
+                        <field name="gm_reconcile_status"/>
+                        <label for="gm_reconcile_sheet"/>
+                        <div class="o_row">
+                            <field name="gm_reconcile_sheet" filename="gm_reconcile_sheet_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_reconcile_sheet'}" invisible="not gm_reconcile_sheet" class="btn-link p-0"/>
+                            <field name="gm_reconcile_sheet_name" invisible="1"/>
+                        </div>
+                    </group>
+                </group>
+
+                <!-- GM 17. Tasklist -->
+                <group invisible="state != 'gm_tasklist'">
+                    <group string="17. Punch List &amp; Remaining Task Checklists">
+                        <field name="gm_tasklist_date"/>
+                        <field name="gm_task_checklist_text"/>
+                        <label for="gm_tasklist_doc"/>
+                        <div class="o_row">
+                            <field name="gm_tasklist_doc" filename="gm_tasklist_doc_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_tasklist_doc'}" invisible="not gm_tasklist_doc" class="btn-link p-0"/>
+                            <field name="gm_tasklist_doc_name" invisible="1"/>
+                        </div>
+                    </group>
+                </group>
+
+                <!-- GM 18. QC -->
+                <group invisible="state != 'gm_qc'">
+                    <group string="18. Final QC Inspection &amp; Closeout">
+                        <field name="gm_qc_date"/>
+                        <field name="gm_qc_status"/>
+                        <field name="gm_qc_inspector"/>
+                        <label for="gm_qc_report"/>
+                        <div class="o_row">
+                            <field name="gm_qc_report" filename="gm_qc_report_name"/>
+                            <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                    context="{'field_name': 'gm_qc_report'}" invisible="not gm_qc_report" class="btn-link p-0"/>
+                            <field name="gm_qc_report_name" invisible="1"/>
+                        </div>
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- Add Ground Mounted history page -->
+            <xpath expr="//page[@name='payments']" position="after">
+                <page name="gm_documentation" string="Project History &amp; Docs" invisible="project_type not in ('ground_mounted', 'commercial')">
+                    <group string="Ground Mounted Project Milestones History">
+                        <group string="LOA Documents" colspan="2">
+                            <field name="loa_line_ids" readonly="1">
+                                <list>
+                                    <field name="file" filename="file_name"/>
+                                    <field name="file_name" column_invisible="True"/>
+                                    <field name="description"/>
+                                </list>
+                            </field>
+                        </group>
+                        <group string="1. Project Apply" colspan="2">
+                            <field name="gm_project_apply_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group col="2">
+                        <group string="2. Discom Application">
+                            <field name="gm_discom_app_date" readonly="1"/>
+                        </group>
+                        <group string="3. Akshay Urja Connectivity Apply">
+                            <field name="gm_akshay_urja_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group col="2">
+                        <group string="4. Document Submit">
+                            <field name="gm_doc_submit_date" readonly="1"/>
+                        </group>
+                        <group string="5. Fees Payment">
+                            <field name="gm_fees_pay_date" readonly="1"/>
+                            <field name="gm_fees_amount" readonly="1"/>
+                            <label for="gm_fees_receipt"/>
+                            <div class="o_row">
+                                <field name="gm_fees_receipt" readonly="1" filename="gm_fees_receipt_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_fees_receipt'}" invisible="not gm_fees_receipt" class="btn-link p-0"/>
+                                <field name="gm_fees_receipt_name" invisible="1"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group col="2">
+                        <group string="6. Approval">
+                            <field name="gm_approval_date" readonly="1"/>
+                            <label for="gm_approval_letter"/>
+                            <div class="o_row">
+                                <field name="gm_approval_letter" readonly="1" filename="gm_approval_letter_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_approval_letter'}" invisible="not gm_approval_letter" class="btn-link p-0"/>
+                                <field name="gm_approval_letter_name" invisible="1"/>
+                            </div>
+                        </group>
+                        <group string="7. Discom Agreement">
+                            <field name="gm_discom_agreement_date" readonly="1"/>
+                            <label for="gm_discom_agreement_doc"/>
+                            <div class="o_row">
+                                <field name="gm_discom_agreement_doc" readonly="1" filename="gm_discom_agreement_doc_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_discom_agreement_doc'}" invisible="not gm_discom_agreement_doc" class="btn-link p-0"/>
+                                <field name="gm_discom_agreement_doc_name" invisible="1"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group col="2">
+                        <group string="8. Land">
+                            <field name="gm_land_area_acres" readonly="1"/>
+                            <field name="gm_land_clearance_date" readonly="1"/>
+                            <field name="gm_land_survey_no" readonly="1"/>
+                            <label for="gm_land_document"/>
+                            <div class="o_row">
+                                <field name="gm_land_document" readonly="1" filename="gm_land_document_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_land_document'}" invisible="not gm_land_document" class="btn-link p-0"/>
+                                <field name="gm_land_document_name" invisible="1"/>
+                            </div>
+                        </group>
+                        <group string="9. Design">
+                            <field name="gm_design_date" readonly="1"/>
+                            <field name="gm_design_approved_by" readonly="1"/>
+                            <label for="gm_design_layout_dwg"/>
+                            <div class="o_row">
+                                <field name="gm_design_layout_dwg" readonly="1" filename="gm_design_layout_dwg_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_design_layout_dwg'}" invisible="not gm_design_layout_dwg" class="btn-link p-0"/>
+                                <field name="gm_design_layout_dwg_name" invisible="1"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group col="2">
+                        <group string="10. BOM">
+                            <field name="gm_bom_date" readonly="1"/>
+                            <field name="gm_bom_cost_est" readonly="1"/>
+                            <label for="gm_bom_sheet"/>
+                            <div class="o_row">
+                                <field name="gm_bom_sheet" readonly="1" filename="gm_bom_sheet_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_bom_sheet'}" invisible="not gm_bom_sheet" class="btn-link p-0"/>
+                                <field name="gm_bom_sheet_name" invisible="1"/>
+                            </div>
+                        </group>
+                        <group string="11. Vendor Selection">
+                            <field name="gm_vendor_select_date" readonly="1"/>
+                            <field name="gm_selected_vendor_id" readonly="1"/>
+                            <field name="gm_purchase_order_ref" readonly="1"/>
+                            <field name="gm_po_amount" readonly="1"/>
+                            <label for="gm_po_document"/>
+                            <div class="o_row">
+                                <field name="gm_po_document" readonly="1" filename="gm_po_document_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_po_document'}" invisible="not gm_po_document" class="btn-link p-0"/>
+                                <field name="gm_po_document_name" invisible="1"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group col="2">
+                        <group string="12. Store Incharge Manager">
+                            <field name="gm_store_incharge_date" readonly="1"/>
+                            <field name="gm_store_manager" readonly="1"/>
+                            <field name="gm_store_remarks" readonly="1"/>
+                            <label for="gm_inward_delivery_challan"/>
+                            <div class="o_row">
+                                <field name="gm_inward_delivery_challan" readonly="1" filename="gm_inward_delivery_challan_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_inward_delivery_challan'}" invisible="not gm_inward_delivery_challan" class="btn-link p-0"/>
+                                <field name="gm_inward_delivery_challan_name" invisible="1"/>
+                            </div>
+                        </group>
+                        <group string="13. Authorised Person">
+                            <field name="gm_authorised_person_date" readonly="1"/>
+                            <field name="gm_authorised_person_name" readonly="1"/>
+                            <field name="gm_authorised_person_id" readonly="1"/>
+                            <label for="gm_auth_letter"/>
+                            <div class="o_row">
+                                <field name="gm_auth_letter" readonly="1" filename="gm_auth_letter_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_auth_letter'}" invisible="not gm_auth_letter" class="btn-link p-0"/>
+                                <field name="gm_auth_letter_name" invisible="1"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group col="2">
+                        <group string="14. MMS Report (25%)">
+                            <field name="gm_mms_report_date" readonly="1"/>
+                            <field name="gm_mms_pile_count" readonly="1"/>
+                            <label for="gm_mms_report_file"/>
+                            <div class="o_row">
+                                <field name="gm_mms_report_file" readonly="1" filename="gm_mms_report_file_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_mms_report_file'}" invisible="not gm_mms_report_file" class="btn-link p-0"/>
+                                <field name="gm_mms_report_file_name" invisible="1"/>
+                            </div>
+                        </group>
+                        <group string="15. Blockwise Reconcile">
+                            <field name="gm_reconcile_date" readonly="1"/>
+                            <field name="gm_reconcile_status" readonly="1"/>
+                            <label for="gm_reconcile_sheet"/>
+                            <div class="o_row">
+                                <field name="gm_reconcile_sheet" readonly="1" filename="gm_reconcile_sheet_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_reconcile_sheet'}" invisible="not gm_reconcile_sheet" class="btn-link p-0"/>
+                                <field name="gm_reconcile_sheet_name" invisible="1"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group col="2">
+                        <group string="16. Tasklist">
+                            <field name="gm_tasklist_date" readonly="1"/>
+                            <field name="gm_task_checklist_text" readonly="1"/>
+                            <label for="gm_tasklist_doc"/>
+                            <div class="o_row">
+                                <field name="gm_tasklist_doc" readonly="1" filename="gm_tasklist_doc_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_tasklist_doc'}" invisible="not gm_tasklist_doc" class="btn-link p-0"/>
+                                <field name="gm_tasklist_doc_name" invisible="1"/>
+                            </div>
+                        </group>
+                        <group string="17. Quality Control (QC)">
+                            <field name="gm_qc_date" readonly="1"/>
+                            <field name="gm_qc_status" readonly="1"/>
+                            <field name="gm_qc_inspector" readonly="1"/>
+                            <label for="gm_qc_report"/>
+                            <div class="o_row">
+                                <field name="gm_qc_report" readonly="1" filename="gm_qc_report_name"/>
+                                <button name="action_preview_document" string="Preview" type="object" icon="fa-eye"
+                                        context="{'field_name': 'gm_qc_report'}" invisible="not gm_qc_report" class="btn-link p-0"/>
+                                <field name="gm_qc_report_name" invisible="1"/>
+                            </div>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

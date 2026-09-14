@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Restrict General Settings menu to Full Settings Access group -->
+    <record id="base.menu_administration" model="ir.ui.menu">
+        <field name="group_ids" eval="[(4, ref('group_setting_full_access'))]"/>
+    </record>
+
+    <!-- Base Apps Management Menu -->
+    <record id="base.menu_management" model="ir.ui.menu">
+        <field name="group_ids" eval="[(4, ref('group_app_access'))]"/>
+    </record>
+
+    <!-- Hide Partner Ledger from Partner Reports (base_accounting_kit) -->
+    <record id="base_accounting_kit.menu_partner_ledger" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+
+    <!-- Hide Partner Ledger from Dynamic Financial Reports (dynamic_accounts_report) -->
+    <record id="dynamic_accounts_report.menu_partner_ledger" model="ir.ui.menu">
+        <field name="active" eval="False"/>
+    </record>
+
+    <!-- Move Project Menu above CRM Menu -->
+    <record id="project.menu_main_pm" model="ir.ui.menu">
+        <field name="sequence">24</field>
+    </record>
+
+    <!-- Custom Favicon Layout Override -->
+    <template id="custom_favicon" inherit_id="web.layout">
+        <xpath expr="//link[@rel='shortcut icon']" position="replace">
+            <link type="image/x-icon" rel="shortcut icon" href="/uyscuti_app_access/static/src/img/favicon.ico"/>
+        </xpath>
+    </template>
+
+    <!-- Hide brand promotion globally (Powered by Odoo) -->
+    <template id="hide_brand_promotion_msg" inherit_id="web.brand_promotion_message">
+        <xpath expr="." position="inside">
+            <style>
+                .o_brand_promotion, .o_brand_promotion_message, .o_powered_by {
+                    display: none !important;
+                }
+            </style>
+        </xpath>
+    </template>
+
+    <!-- Hide Login Extras (Don't have an account, Log in as superuser, separator, and Powered by Odoo) -->
+    <template id="hide_login_extras" inherit_id="web.login_layout">
+        <xpath expr="." position="inside">
+            <style>
+                /* Hide "Don't have an account?" link */
+                a[href*="/web/signup"] {
+                    display: none !important;
+                }
+                /* Hide "Log in as superuser" button or link */
+                button[value="/web/become"],
+                a[href*="/web/become"] {
+                    display: none !important;
+                }
+                /* Hide the "- or -" separator text block */
+                .text-center.my-3.text-muted,
+                #auth_passkey_separator {
+                    display: none !important;
+                }
+                /* Hide "Powered by Odoo" link and its containers */
+                a[href*="odoo.com"],
+                .o_brand_promotion,
+                .o_brand_promotion_message,
+                .o_powered_by {
+                    display: none !important;
+                }
+                /* Hide the separator line below login button */
+                .border-top:has(a[href*="odoo.com"]),
+                .card-body > .border-top,
+                hr {
+                    display: none !important;
+                }
+            </style>
+        </xpath>
+    </template>
+</odoo>

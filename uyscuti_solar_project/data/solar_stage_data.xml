@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Clean up obsolete stage permissions from database -->
+        <delete model="solar.stage.permission" search="[('code', 'not in', ['loa', 'gm_project_apply', 'gm_discom_app', 'gm_akshay_urja', 'gm_doc_submit', 'gm_fees_pay', 'gm_approval', 'gm_discom_agreement', 'gm_land', 'gm_design', 'gm_bom', 'gm_vendor_select', 'gm_store_incharge', 'gm_authorised_person', 'gm_mms_report', 'gm_blockwise_reconcile', 'gm_tasklist', 'gm_qc', 'payment_clear'])]"/>
+
+        <record id="stage_loa" model="solar.stage.permission">
+            <field name="name">1. LOA (Letter of Acceptance)</field>
+            <field name="code">loa</field>
+            <field name="sequence">1</field>
+        </record>
+        <record id="stage_gm_project_apply" model="solar.stage.permission">
+            <field name="name">2. Project Apply</field>
+            <field name="code">gm_project_apply</field>
+            <field name="sequence">2</field>
+        </record>
+        <record id="stage_gm_discom_app" model="solar.stage.permission">
+            <field name="name">3. Discom Application</field>
+            <field name="code">gm_discom_app</field>
+            <field name="sequence">3</field>
+        </record>
+        <record id="stage_gm_akshay_urja" model="solar.stage.permission">
+            <field name="name">4. Akshay Urja Connectivity Apply</field>
+            <field name="code">gm_akshay_urja</field>
+            <field name="sequence">4</field>
+        </record>
+        <record id="stage_gm_doc_submit" model="solar.stage.permission">
+            <field name="name">5. Document Submit</field>
+            <field name="code">gm_doc_submit</field>
+            <field name="sequence">5</field>
+        </record>
+        <record id="stage_gm_fees_pay" model="solar.stage.permission">
+            <field name="name">6. Fees Payment</field>
+            <field name="code">gm_fees_pay</field>
+            <field name="sequence">6</field>
+        </record>
+        <record id="stage_gm_approval" model="solar.stage.permission">
+            <field name="name">7. Approval</field>
+            <field name="code">gm_approval</field>
+            <field name="sequence">7</field>
+        </record>
+        <record id="stage_gm_discom_agreement" model="solar.stage.permission">
+            <field name="name">8. Discom Agreement</field>
+            <field name="code">gm_discom_agreement</field>
+            <field name="sequence">8</field>
+        </record>
+        <record id="stage_gm_land" model="solar.stage.permission">
+            <field name="name">9. Land</field>
+            <field name="code">gm_land</field>
+            <field name="sequence">9</field>
+        </record>
+        <record id="stage_gm_design" model="solar.stage.permission">
+            <field name="name">10. Design</field>
+            <field name="code">gm_design</field>
+            <field name="sequence">10</field>
+        </record>
+        <record id="stage_gm_bom" model="solar.stage.permission">
+            <field name="name">11. BOM</field>
+            <field name="code">gm_bom</field>
+            <field name="sequence">11</field>
+        </record>
+        <record id="stage_gm_vendor_select" model="solar.stage.permission">
+            <field name="name">12. Vendor Selection (Purchase)</field>
+            <field name="code">gm_vendor_select</field>
+            <field name="sequence">12</field>
+        </record>
+        <record id="stage_gm_store_incharge" model="solar.stage.permission">
+            <field name="name">13. Store Incharge Manager</field>
+            <field name="code">gm_store_incharge</field>
+            <field name="sequence">13</field>
+        </record>
+        <record id="stage_gm_authorised_person" model="solar.stage.permission">
+            <field name="name">14. Authorised Person</field>
+            <field name="code">gm_authorised_person</field>
+            <field name="sequence">14</field>
+        </record>
+        <record id="stage_gm_mms_report" model="solar.stage.permission">
+            <field name="name">15. MMS Report (25%)</field>
+            <field name="code">gm_mms_report</field>
+            <field name="sequence">15</field>
+        </record>
+        <record id="stage_gm_blockwise_reconcile" model="solar.stage.permission">
+            <field name="name">16. Blockwise Reconcile</field>
+            <field name="code">gm_blockwise_reconcile</field>
+            <field name="sequence">16</field>
+        </record>
+        <record id="stage_gm_tasklist" model="solar.stage.permission">
+            <field name="name">17. Tasklist</field>
+            <field name="code">gm_tasklist</field>
+            <field name="sequence">17</field>
+        </record>
+        <record id="stage_gm_qc" model="solar.stage.permission">
+            <field name="name">18. Quality Control (QC)</field>
+            <field name="code">gm_qc</field>
+            <field name="sequence">18</field>
+        </record>
+        <record id="stage_payment_clear" model="solar.stage.permission">
+            <field name="name">Payment Clear</field>
+            <field name="code">payment_clear</field>
+            <field name="sequence">19</field>
+        </record>
+    </data>
+</odoo>

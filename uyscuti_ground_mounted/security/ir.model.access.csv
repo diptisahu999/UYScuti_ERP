@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_solar_gm_proposal_user,solar.gm.proposal,model_solar_gm_proposal,base.group_user,1,1,1,1
+access_solar_gm_proposal_line_user,solar.gm.proposal.line,model_solar_gm_proposal_line,base.group_user,1,1,1,1
+access_solar_project_doc_photo_user,solar.project.doc.photo,model_solar_project_doc_photo,base.group_user,1,1,1,1
+access_solar_project_design_image_user,solar.project.design.image,model_solar_project_design_image,base.group_user,1,1,1,1
+access_solar_project_photo_type_user,solar.project.photo.type,model_solar_project_photo_type,base.group_user,1,1,1,1
+

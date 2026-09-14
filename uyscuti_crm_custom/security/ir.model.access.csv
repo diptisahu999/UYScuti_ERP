@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_solar_discom_user,solar.discom,model_solar_discom,base.group_user,1,1,1,1
+access_solar_terrace_type_user,solar.terrace.type,model_solar_terrace_type,base.group_user,1,1,1,1
+access_solar_module_make_user,solar.module.make,model_solar_module_make,base.group_user,1,1,1,1
+access_solar_module_type_user,solar.module.type,model_solar_module_type,base.group_user,1,1,1,1
+access_solar_module_wp_user,solar.module.wp,model_solar_module_wp,base.group_user,1,1,1,1
+access_crm_lead_photo_user,crm.lead.photo,model_crm_lead_photo,base.group_user,1,1,1,1
+access_solar_discom_fee_user,solar.discom.fee,model_solar_discom_fee,base.group_user,1,1,1,1
+access_solar_system_strength_config_user,solar.system.strength.config,model_solar_system_strength_config,base.group_user,1,1,1,1

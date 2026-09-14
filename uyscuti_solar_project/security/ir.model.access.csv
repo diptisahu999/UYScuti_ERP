@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_solar_project_user,solar.project,model_solar_project,base.group_user,1,1,1,1
+access_solar_project_payment_user,solar.project.payment,model_solar_project_payment,base.group_user,1,1,1,1
+access_solar_stage_permission_user,solar.stage.permission,model_solar_stage_permission,base.group_user,1,0,0,0
+access_solar_financials_user,solar.financials,model_solar_financials,base.group_user,1,1,1,1
+access_solar_financials_cashflow_user,solar.financials.cashflow,model_solar_financials_cashflow,base.group_user,1,1,1,1
+access_solar_project_loa_line_user,solar.project.loa.line,model_solar_project_loa_line,base.group_user,1,1,1,1

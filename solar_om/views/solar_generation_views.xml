@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_solar_daily_generation_list" model="ir.ui.view">
+        <field name="name">solar.daily.generation.list</field>
+        <field name="model">solar.daily.generation</field>
+        <field name="arch" type="xml">
+            <list string="Daily Power Generation">
+                <field name="date"/>
+                <field name="plant_id" options="{'no_create': True}"/>
+                <field name="capacity_str" string="Capacity (MW)"/>
+                <field name="discom_name"/>
+                <field name="energy_kwh" string="Energy KWH/ Day"/>
+                <field name="price_per_unit" string="Price /Unit"/>
+                <field name="revenue" string="Revenue (Rs.)" readonly="1" sum="Total Revenue"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_solar_daily_generation_form" model="ir.ui.view">
+        <field name="name">solar.daily.generation.form</field>
+        <field name="model">solar.daily.generation</field>
+        <field name="arch" type="xml">
+            <form string="Daily Power Generation">
+                <sheet>
+                    <group>
+                        <group string="Basic Details">
+                            <field name="date"/>
+                            <field name="plant_id"/>
+                            <field name="capacity_str"/>
+                            <field name="discom_name"/>
+                        </group>
+                        <group string="Generation Metrics">
+                            <field name="energy_kwh"/>
+                            <field name="price_per_unit"/>
+                            <field name="revenue" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_solar_daily_generation_search" model="ir.ui.view">
+        <field name="name">solar.daily.generation.search</field>
+        <field name="model">solar.daily.generation</field>
+        <field name="arch" type="xml">
+            <search string="Search Daily Generation">
+                <field name="plant_id"/>
+                <field name="discom_name"/>
+                <field name="date"/>
+                <separator/>
+                <filter string="Today" name="today" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="This Month" name="this_month" domain="[('date', '&gt;=', context_today().strftime('%Y-%m-01')), ('date', '&lt;=', context_today().strftime('%Y-%m-31'))]"/>
+                <group>
+                    <filter string="Solar Plant" name="group_plant" context="{'group_by': 'plant_id'}"/>
+                    <filter string="Discom Name" name="group_discom" context="{'group_by': 'discom_name'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_solar_daily_generation" model="ir.actions.act_window">
+        <field name="name">Daily Generation</field>
+        <field name="res_model">solar.daily.generation</field>
+        <field name="view_mode">list,form,search</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add your first daily generation entry!
+            </p>
+        </field>
+    </record>
+</odoo>

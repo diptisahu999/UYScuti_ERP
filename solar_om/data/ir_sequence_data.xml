@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Plant Sequence -->
+        <record id="seq_solar_plant" model="ir.sequence">
+            <field name="name">Solar Plant Sequence</field>
+            <field name="code">solar.plant</field>
+            <field name="prefix">PLANT/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Preventive Maintenance Sequence -->
+        <record id="seq_solar_maintenance" model="ir.sequence">
+            <field name="name">Preventive Maintenance Sequence</field>
+            <field name="code">solar.maintenance</field>
+            <field name="prefix">MT/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Breakdown Management Sequence -->
+        <record id="seq_solar_breakdown" model="ir.sequence">
+            <field name="name">Breakdown Sequence</field>
+            <field name="code">solar.breakdown</field>
+            <field name="prefix">BD/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Cleaning Management Sequence -->
+        <record id="seq_solar_cleaning" model="ir.sequence">
+            <field name="name">Cleaning Sequence</field>
+            <field name="code">solar.cleaning</field>
+            <field name="prefix">CL/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- General Task Sequence -->
+        <record id="seq_solar_task" model="ir.sequence">
+            <field name="name">Solar Task Sequence</field>
+            <field name="code">solar.task</field>
+            <field name="prefix">TASK/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

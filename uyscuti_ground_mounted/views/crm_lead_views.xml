@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_form_inherit_uyscuti_ground_mounted" model="ir.ui.view">
+        <field name="name">crm.lead.view.form.inherit.uyscuti_ground_mounted</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Smart Button inside the button box - visible on Opportunity page when Ground Mounted or Commercial -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <field name="type" invisible="1"/>
+                <field name="solar_lead_type" invisible="1"/>
+                <button name="action_view_gm_proposals" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-calculator" 
+                        invisible="solar_lead_type not in ('ground_mounted', 'commercial') or type != 'opportunity'">
+                    <div class="o_stat_info">
+                        <field name="gm_proposal_count" class="o_stat_value"/>
+                        <span class="o_stat_text">Proposals</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <!-- Add Solar Lead Type selection next to Type of Lead (tag_ids) -->
+            <xpath expr="//field[@name='tag_ids']" position="before">
+                <field name="solar_lead_type" widget="radio" options="{'horizontal': true}"/>
+            </xpath>
+            <xpath expr="(//field[@name='tag_ids'])[2]" position="before">
+                <field name="solar_lead_type" widget="radio" options="{'horizontal': true}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Also inherit discom view to add master configs for Ground Mounted -->
+    <record id="solar_discom_view_form_inherit_gm" model="ir.ui.view">
+        <field name="name">solar.discom.view.form.inherit.gm</field>
+        <field name="model">solar.discom</field>
+        <field name="inherit_id" ref="uyscuti_crm_custom.view_solar_discom_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='fee_ids']" position="before">
+                <group string="Ground Mounted Master Charges / Loss Factors">
+                    <group>
+                        <field name="wheeling_loss_pct"/>
+                        <field name="wheeling_rate"/>
+                        <field name="trans_loss_pct"/>
+                        <field name="scheduling_rate"/>
+                    </group>
+                    <group>
+                        <field name="trans_rate"/>
+                        <field name="sec_wheeling_loss_pct"/>
+                        <field name="sec_wheeling_rate"/>
+                        <field name="banking_rate"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

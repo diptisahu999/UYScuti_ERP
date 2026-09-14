@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_inherit_uyscuti_consumer" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.uyscuti.consumer</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='function']" position="before">
+                <field name="uyscuti_consumer_name" string="Consumer Name"/>
+                <field name="uyscuti_consumer_id" string="Consumer Number"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
