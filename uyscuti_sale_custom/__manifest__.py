@@ -7,7 +7,7 @@
         This module contains customizations for Sales.
         - Removes 'New' button from Quotation List and Kanban views.
     """,
-    'depends': ['sale', 'uyscuti_crm_custom'],
+    'depends': ['sale', 'uyscuti_crm_custom', 'solar_om'],
     'data': [
         'views/sale_order_views.xml',
     ],

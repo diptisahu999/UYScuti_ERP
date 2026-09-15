@@ -5,6 +5,7 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     # Solar Details
+    solar_plant_id = fields.Many2one('solar.plant', string='Solar Plant')
     solar_kw_capacity = fields.Float(string='Solar Capacity (KW)', digits=(10, 3))
     solar_sanction_load = fields.Float(string='Sanction Load (KW)')
     solar_sanction_phase = fields.Selection([('1ph', '1PH'), ('3ph', '3PH')], string='Sanction Load Phase', default='1ph')

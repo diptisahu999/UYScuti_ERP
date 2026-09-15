@@ -6,23 +6,8 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_quotation_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//list" position="attributes">
-                <attribute name="create">0</attribute>
-            </xpath>
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="uyscuti_consumer_name" string="Consumer Name"/>
-            </xpath>
-        </field>
-    </record>
-
-    <!-- Inherit Sale Order Kanban View -->
-    <record id="view_sale_order_kanban_inherit_uyscuti_sale_custom" model="ir.ui.view">
-        <field name="name">sale.order.kanban.inherit.uyscuti_sale_custom</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_sale_order_kanban"/>
-        <field name="arch" type="xml">
-            <xpath expr="//kanban" position="attributes">
-                <attribute name="create">0</attribute>
             </xpath>
         </field>
     </record>
@@ -33,9 +18,6 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//form" position="attributes">
-                <attribute name="create">0</attribute>
-            </xpath>
             <xpath expr="//field[@name='partner_id']" position="after">
                 <field name="uyscuti_consumer_name" string="Consumer Name" readonly="1"/>
                 <field name="uyscuti_consumer_id" string="Consumer Number" readonly="1"/>
