@@ -13,6 +13,7 @@
     'depends': [
         'base',
         'mail',
+        'sale',
     ],
     'data': [
         'security/solar_om_security.xml',
@@ -21,6 +22,7 @@
         'views/solar_plant_views.xml',
         'views/solar_task_views.xml',
         'views/solar_generation_views.xml',
+        'views/sale_order_views.xml',
         'views/dashboard_views.xml',
         'wizard/solar_monthly_generation_wizard_views.xml',
         'views/menus.xml',

@@ -45,6 +45,8 @@ class SolarPlant(models.Model):
     breakdown_count = fields.Integer(string='Breakdown Count', compute='_compute_smart_button_counts')
     task_count = fields.Integer(string='Tasks Count', compute='_compute_smart_button_counts')
     generation_count = fields.Integer(string='Generation Logs Count', compute='_compute_smart_button_counts')
+    sale_order_ids = fields.One2many('sale.order', 'solar_plant_id', string='Sales Orders')
+    sale_order_count = fields.Integer(string='Sales Orders Count', compute='_compute_smart_button_counts')
 
     @api.depends('street', 'city', 'state_id', 'country_id', 'zip')
     def _compute_address(self):
@@ -59,6 +61,7 @@ class SolarPlant(models.Model):
             record.breakdown_count = self.env['solar.breakdown'].search_count([('plant_id', '=', record.id)])
             record.task_count = self.env['solar.task'].search_count([('plant_id', '=', record.id)])
             record.generation_count = self.env['solar.daily.generation'].search_count([('plant_id', '=', record.id)])
+            record.sale_order_count = self.env['sale.order'].search_count([('solar_plant_id', '=', record.id)]) if 'solar_plant_id' in self.env['sale.order']._fields else 0
 
     def action_view_maintenance(self):
         self.ensure_one()
@@ -113,6 +116,20 @@ class SolarPlant(models.Model):
             'view_mode': 'list,form',
             'domain': [('plant_id', '=', self.id)],
             'context': {'default_plant_id': self.id},
+        }
+
+    def action_view_sales(self):
+        self.ensure_one()
+        return {
+            'name': _('Sales Orders'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'sale.order',
+            'view_mode': 'list,form',
+            'domain': [('solar_plant_id', '=', self.id)],
+            'context': {
+                'default_solar_plant_id': self.id,
+                'default_partner_id': self.customer_id.id if self.customer_id else False,
+            },
         }
 
     @api.model_create_multi

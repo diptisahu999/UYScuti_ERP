@@ -83,6 +83,9 @@
                         <button name="action_view_generation" type="object" class="oe_stat_button" icon="fa-bolt">
                             <field name="generation_count" string="Generation" widget="statinfo"/>
                         </button>
+                        <button name="action_view_sales" type="object" class="oe_stat_button" icon="fa-usd">
+                            <field name="sale_order_count" string="Sales" widget="statinfo"/>
+                        </button>
                     </div>
 
                     <div class="oe_title">
