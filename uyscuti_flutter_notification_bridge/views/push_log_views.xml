@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="view_push_log_tree" model="ir.ui.view">
+        <field name="name">push.log.list</field>
+        <field name="model">push.log</field>
+        <field name="arch" type="xml">
+            <list string="Push Notification Logs" create="0" edit="0">
+                <field name="date_sent"/>
+                <field name="user_id"/>
+                <field name="title"/>
+                <field name="status"
+                       widget="badge"
+                       decoration-success="status == 'success'"
+                       decoration-danger="status == 'failed'"/>
+                <field name="message_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_push_log_form" model="ir.ui.view">
+        <field name="name">push.log.form</field>
+        <field name="model">push.log</field>
+        <field name="arch" type="xml">
+            <form string="Push Notification Log" create="0" edit="0">
+                <sheet>
+                    <group>
+                        <group string="Notification Info">
+                            <field name="user_id"/>
+                            <field name="device_id"/>
+                            <field name="date_sent"/>
+                            <field name="status"
+                                   widget="badge"
+                                   decoration-success="status == 'success'"
+                                   decoration-danger="status == 'failed'"/>
+                        </group>
+                        <group string="Delivery Info">
+                            <field name="message_id"/>
+                            <field name="title"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Message Content">
+                            <group>
+                                <field name="body"/>
+                            </group>
+                        </page>
+                        <page string="Data Payload" invisible="not data_payload">
+                            <field name="data_payload"/>
+                        </page>
+                        <page string="Error Details" invisible="status != 'failed'">
+                            <field name="error_message"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_push_log_search" model="ir.ui.view">
+        <field name="name">push.log.search</field>
+        <field name="model">push.log</field>
+        <field name="arch" type="xml">
+            <search string="Search Push Notification Logs">
+                <field name="name"/>
+                <field name="title"/>
+                <field name="user_id"/>
+                <field name="message_id"/>
+                <separator/>
+                <filter name="status_success" string="Success" domain="[('status', '=', 'success')]"/>
+                <filter name="status_failed" string="Failed" domain="[('status', '=', 'failed')]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_push_log" model="ir.actions.act_window">
+        <field name="name">Push Notification Logs</field>
+        <field name="res_model">push.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_push_log_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No notification logs recorded yet!
+            </p>
+            <p>
+                Every push notification sent to a user device will be logged here.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item: Push Notification Logs -->
+    <menuitem id="menu_push_log"
+              name="Push Notification Logs"
+              parent="menu_push_notification_root"
+              action="action_push_log"
+              sequence="20"/>
+
+</odoo>

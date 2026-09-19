@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="view_push_event_tree" model="ir.ui.view">
+        <field name="name">push.event.list</field>
+        <field name="model">push.event</field>
+        <field name="arch" type="xml">
+            <list string="Notification Events">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="team_member_ids" widget="many2many_tags"/>
+                <field name="supervisor_ids" widget="many2many_tags"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_push_event_form" model="ir.ui.view">
+        <field name="name">push.event.form</field>
+        <field name="model">push.event</field>
+        <field name="arch" type="xml">
+            <form string="Notification Event">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Event Name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. CRM: New Lead Created"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Recipients">
+                            <group>
+                                <field name="team_member_ids" widget="many2many_tags" placeholder="Select team members to receive notifications..."/>
+                                <field name="supervisor_ids" widget="many2many_tags" placeholder="Select supervisors to receive notifications..."/>
+                            </group>
+                        </page>
+                        <page string="Description">
+                            <field name="description" placeholder="Add details or notes about this notification event..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_push_event_search" model="ir.ui.view">
+        <field name="name">push.event.search</field>
+        <field name="model">push.event</field>
+        <field name="arch" type="xml">
+            <search string="Search Notification Events">
+                <field name="name"/>
+                <field name="code"/>
+                <separator/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="filter_inactive" string="Archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_push_event" model="ir.actions.act_window">
+        <field name="name">Notification Events</field>
+        <field name="res_model">push.event</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_push_event_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configure your first notification event!
+            </p>
+            <p>
+                Manage which team members and supervisors receive push notifications for system events.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item: Notification Events -->
+    <menuitem id="menu_push_event"
+              name="Notification Events"
+              parent="menu_push_notification_root"
+              action="action_push_event"
+              sequence="30"/>
+
+</odoo>

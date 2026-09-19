@@ -11,7 +11,11 @@
         'mail', 
     ],
     'data': [
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'data/push_event_data.xml',
+        'views/push_device_views.xml',
+        'views/push_log_views.xml',
+        'views/push_event_views.xml',
     ],
     'installable': True,
     'application': False,

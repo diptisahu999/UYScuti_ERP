@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_push_device,push.device,model_push_device,,1,1,1,1
+access_push_log,push.log,model_push_log,,1,1,1,1
+access_push_event,push.event,model_push_event,,1,1,1,1

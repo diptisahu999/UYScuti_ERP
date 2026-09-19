@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- List View -->
+    <record id="view_push_device_tree" model="ir.ui.view">
+        <field name="name">push.device.list</field>
+        <field name="model">push.device</field>
+        <field name="arch" type="xml">
+            <list string="Push Devices">
+                <field name="user_id"/>
+                <field name="platform"/>
+                <field name="fcm_token"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_push_device_form" model="ir.ui.view">
+        <field name="name">push.device.form</field>
+        <field name="model">push.device</field>
+        <field name="arch" type="xml">
+            <form string="Push Device">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="platform"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                        <group>
+                            <field name="fcm_token"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_push_device_search" model="ir.ui.view">
+        <field name="name">push.device.search</field>
+        <field name="model">push.device</field>
+        <field name="arch" type="xml">
+            <search string="Search Push Devices">
+                <field name="user_id"/>
+                <field name="fcm_token"/>
+                <field name="platform"/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="filter_inactive" string="Archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_push_device" model="ir.actions.act_window">
+        <field name="name">Push Devices</field>
+        <field name="res_model">push.device</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_push_device_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No push devices registered yet!
+            </p>
+            <p>
+                Mobile devices will automatically register their FCM token here upon login.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Structure -->
+    <menuitem id="menu_push_notification_root"
+              name="Push Notifications"
+              parent="base.menu_administration"
+              sequence="50"/>
+
+    <menuitem id="menu_push_device"
+              name="Push Devices"
+              parent="menu_push_notification_root"
+              action="action_push_device"
+              sequence="10"/>
+
+</odoo>

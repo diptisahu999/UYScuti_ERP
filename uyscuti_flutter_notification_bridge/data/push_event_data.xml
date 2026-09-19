@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ============================================== -->
+        <!-- CRM EVENTS                                     -->
+        <!-- ============================================== -->
+        <record id="push_event_crm_lead_created" model="push.event">
+            <field name="name">CRM: New Lead Created</field>
+            <field name="code">crm_lead_created</field>
+            <field name="sequence">10</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a new CRM lead/opportunity is created.</field>
+        </record>
+
+        <record id="push_event_crm_lead_assigned" model="push.event">
+            <field name="name">CRM: Lead Assigned/Changed</field>
+            <field name="code">crm_lead_assigned</field>
+            <field name="sequence">11</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a lead is assigned or salesperson is updated.</field>
+        </record>
+
+        <!-- ============================================== -->
+        <!-- PROJECT & TASK EVENTS (project_task_library)  -->
+        <!-- ============================================== -->
+        <record id="push_event_project_task_created" model="push.event">
+            <field name="name">Project: New Task Created</field>
+            <field name="code">project_task_created</field>
+            <field name="sequence">20</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a new task is created within a project.</field>
+        </record>
+
+        <record id="push_event_project_task_assigned" model="push.event">
+            <field name="name">Project: Task Assigned/Changed</field>
+            <field name="code">project_task_assigned</field>
+            <field name="sequence">21</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a user is assigned or re-assigned to a task.</field>
+        </record>
+
+        <record id="push_event_project_task_approval" model="push.event">
+            <field name="name">Project: Task Submitted for Approval</field>
+            <field name="code">project_task_approval</field>
+            <field name="sequence">22</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a task status is moved to Approval state.</field>
+        </record>
+
+        <record id="push_event_project_task_completed" model="push.event">
+            <field name="name">Project: Task Completed</field>
+            <field name="code">project_task_completed</field>
+            <field name="sequence">23</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a project task is marked as Done (completed).</field>
+        </record>
+
+        <record id="push_event_project_subtask_created" model="push.event">
+            <field name="name">Project: New Sub-task Created</field>
+            <field name="code">project_subtask_created</field>
+            <field name="sequence">24</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a new sub-task is created under a task.</field>
+        </record>
+
+        <record id="push_event_project_subtask_assigned" model="push.event">
+            <field name="name">Project: Sub-task Assigned/Changed</field>
+            <field name="code">project_subtask_assigned</field>
+            <field name="sequence">25</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a sub-task is assigned to a user.</field>
+        </record>
+
+        <!-- ============================================== -->
+        <!-- SOLAR O&M EVENTS (solar_om)                    -->
+        <!-- ============================================== -->
+        <record id="push_event_solar_maintenance_assigned" model="push.event">
+            <field name="name">Solar O&amp;M: Maintenance Task Assigned</field>
+            <field name="code">solar_maintenance_assigned</field>
+            <field name="sequence">30</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a preventive maintenance task is assigned to an engineer/technician.</field>
+        </record>
+
+        <record id="push_event_solar_maintenance_completed" model="push.event">
+            <field name="name">Solar O&amp;M: Maintenance Task Completed</field>
+            <field name="code">solar_maintenance_completed</field>
+            <field name="sequence">31</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a preventive maintenance task is completed.</field>
+        </record>
+
+        <record id="push_event_solar_breakdown_assigned" model="push.event">
+            <field name="name">Solar O&amp;M: Breakdown Ticket Assigned</field>
+            <field name="code">solar_breakdown_assigned</field>
+            <field name="sequence">32</field>
+            <field name="active">True</field>
+            <field name="description">Fires when an urgent breakdown ticket is assigned.</field>
+        </record>
+
+        <record id="push_event_solar_breakdown_completed" model="push.event">
+            <field name="name">Solar O&amp;M: Breakdown Ticket Completed</field>
+            <field name="code">solar_breakdown_completed</field>
+            <field name="sequence">33</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a breakdown issue ticket is resolved and completed.</field>
+        </record>
+
+        <record id="push_event_solar_cleaning_assigned" model="push.event">
+            <field name="name">Solar O&amp;M: Cleaning Task Assigned</field>
+            <field name="code">solar_cleaning_assigned</field>
+            <field name="sequence">34</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a solar panel cleaning cycle task is assigned.</field>
+        </record>
+
+        <record id="push_event_solar_cleaning_completed" model="push.event">
+            <field name="name">Solar O&amp;M: Cleaning Task Completed</field>
+            <field name="code">solar_cleaning_completed</field>
+            <field name="sequence">35</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a solar cleaning cycle is completed.</field>
+        </record>
+
+        <record id="push_event_solar_task_assigned" model="push.event">
+            <field name="name">Solar O&amp;M: General Task Assigned</field>
+            <field name="code">solar_task_assigned</field>
+            <field name="sequence">36</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a general solar O&amp;M task is assigned.</field>
+        </record>
+
+        <record id="push_event_solar_task_completed" model="push.event">
+            <field name="name">Solar O&amp;M: General Task Completed</field>
+            <field name="code">solar_task_completed</field>
+            <field name="sequence">37</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a general solar O&amp;M task is marked completed.</field>
+        </record>
+
+        <!-- ============================================== -->
+        <!-- SALES & BILLING EVENTS                         -->
+        <!-- ============================================== -->
+        <record id="push_event_sale_order_confirmed" model="push.event">
+            <field name="name">Sales: Order Confirmed</field>
+            <field name="code">sale_order_confirmed</field>
+            <field name="sequence">40</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a sales quotation is confirmed into a sale order.</field>
+        </record>
+
+        <record id="push_event_invoice_validated" model="push.event">
+            <field name="name">Accounting: Invoice Validated</field>
+            <field name="code">invoice_validated</field>
+            <field name="sequence">41</field>
+            <field name="active">True</field>
+            <field name="description">Fires when a customer invoice is posted / validated.</field>
+        </record>
+
+    </data>
+</odoo>
