@@ -48,6 +48,14 @@ class RegisterFCMTokenAPI(http.Controller):
         if stale_devices:
             stale_devices.unlink()
 
+        # Remove old device tokens for the current user (keeps only 1 active token per user)
+        old_user_devices = Device.search([
+            ('user_id', '=', request.env.user.id),
+            ('fcm_token', '!=', fcm_token)
+        ])
+        if old_user_devices:
+            old_user_devices.unlink()
+
         # Check if already registered for current user
         device = Device.search([
             ('user_id', '=', request.env.user.id),
